@@ -5,7 +5,7 @@
 
 ## Lernziel
 
-Du testest zentrale Logik ohne Emulator: ViewModel, Mapper und kleine Utility-Funktionen. Du nutzt Fakes statt sofort ein Mocking-Framework einzuführen.
+Du testest zentrale Logik ohne Emulator: ViewModel, UseCases, Repository, Mapper und kleine Utility-Funktionen. Du nutzt Fakes statt sofort ein Mocking-Framework einzuführen.
 
 ## Kontext
 
@@ -23,7 +23,7 @@ Erstelle ein Test-Repository, das:
 
 ### B) ViewModel testen
 
-Teste mindestens:
+Teste das ViewModel in Isolation über FakeRepository und echte UseCases:
 
 - initialer Load mit Daten
 - Suche filtert korrekt
@@ -33,7 +33,15 @@ Teste mindestens:
 
 Achte auf Coroutine-Testsetup für den Main Dispatcher.
 
-### C) Entity-Mapper testen
+### C) Repository testen
+
+Teste `DefaultBookRepository` direkt mit Fake-API und Fake-DAO:
+
+- erfolgreicher API-Refresh schreibt Bücher in den DAO
+- API-Fehler liefert einen Failure-Result und nutzt Fallback-Daten
+- leere Query ruft die API nicht auf
+
+### D) Entity-Mapper testen
 
 Teste:
 
@@ -42,7 +50,7 @@ Teste:
 - Roundtrip ohne Datenverlust
 - Null-/Optional-Felder
 
-### D) DTO-Mapper testen
+### E) DTO-Mapper testen
 
 Teste Open-Library-Mapping:
 
@@ -53,7 +61,7 @@ Teste Open-Library-Mapping:
 - fehlende Autoren
 - fehlende Cover-ID
 
-### E) Extensions testen
+### F) Extensions testen
 
 Teste Grenzfälle deiner Extension Functions.
 
@@ -77,8 +85,10 @@ Teste Grenzfälle deiner Extension Functions.
 
 - Unit-Tests laufen lokal grün
 - ViewModel wird ohne Android-Gerät getestet
+- Repository wird direkt getestet
+- Result-Typen werden in Tests abgedeckt
 - Mapper sind gegen Null-/Edge-Cases abgesichert
-- FakeRepository ist verständlich und bewusst eingesetzt
+- FakeRepository/FakeDAO/FakeAPI sind verständlich und bewusst eingesetzt
 
 ## Erweiterte Musterlösung
 

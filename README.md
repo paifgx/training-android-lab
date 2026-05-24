@@ -1,6 +1,6 @@
 # Bookshelf — Android Training Lab
 
-Ein schrittweises Android-Trainingsprojekt: Kotlin, MVVM, Retrofit, Room, Hilt.
+Ein schrittweises Android-Trainingsprojekt: Kotlin, MVVM, UseCases, Retrofit, Room, Hilt.
 Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklung einsteigen.
 
 ## Konzept
@@ -14,12 +14,26 @@ Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklun
 | Kotlin 1.9.25 | Programmiersprache |
 | Android SDK 34 (MinSdk 25) | Plattform |
 | ViewBinding + XML | UI (kein Compose) |
-| MVVM + StateFlow | Architektur |
+| MVVM + StateFlow + UseCases | Architektur |
 | Retrofit 2.11 + Moshi | Netzwerk |
 | Room 2.6.1 | Persistenz |
 | Hilt 2.52 | Dependency Injection |
 | Coil 2.7 | Image Loading |
 | JUnit 4 + kotlinx-coroutines-test | Testing |
+
+### Aufgaben, Branches und Tags
+
+| Trainingstag | Aufgabe | Thema | Pflicht-Branch / Tag | Erweiterter Branch / Tag |
+|---|---:|---|---|---|
+| Tag 1 | 01 | Kotlin-Grundlagen | `task/01-kotlin-basics` / `task-01-done` | `task/01-kotlin-basics-extended` / `task-01-extended-done` |
+| Tag 1 | 02 | MVVM, StateFlow, Repository, UseCases | `task/02-mvvm-repository` / `task-02-done` | `task/02-mvvm-repository-extended` / `task-02-extended-done` |
+| Tag 2 | 03 | Retrofit + Open Library | `task/03-retrofit-service` / `task-03-done` | `task/03-retrofit-service-extended` / `task-03-extended-done` |
+| Tag 2 | 04 | Room-Persistenz | `task/04-room-persistenz` / `task-04-done` | `task/04-room-persistenz-extended` / `task-04-extended-done` |
+| Tag 2 | 05 | Single Source of Truth + Result-Typen | `task/05-single-source-truth` / `task-05-done` | `task/05-single-source-truth-extended` / `task-05-extended-done` |
+| Tag 3 | 06 | Hilt DI + Qualifier | `task/06-hilt-di` / `task-06-done` | `task/06-hilt-di-extended` / `task-06-extended-done` |
+| Tag 4 | 07 | Unit- und Repository-Tests | `task/07-testing` / `task-07-done` | `task/07-testing-extended` / `task-07-extended-done` |
+| Tag 4 | 08 | Integration, Review, Transfer | `task/08-final-integration` / `task-08-done` | `task/08-final-integration-extended` / `task-08-extended-done` |
+| Abschluss | — | Komplettstand | `solution/final` / `final-solution` | `solution/extended` / `extended-solution` |
 
 ### Aufbau
 
@@ -47,7 +61,7 @@ Siehe [`docs/branch-guide.md`](docs/branch-guide.md).
 ## Voraussetzungen
 
 - Android Studio Hedgehog (2023.1.1) oder neuer
-- JDK 17
+- JDK 17 oder Android Studio Embedded JDK
 - Android SDK mit Platform 34
 
 ## Schnellstart
