@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val repository = FakeBookRepository()
         viewModel = BookListViewModel(
-            searchBooks = SearchBooksUseCase(repository),
-            refreshBooks = RefreshBooksUseCase(repository)
+            searchBooksUseCase = SearchBooksUseCase(repository),
+            refreshBooksUseCase = RefreshBooksUseCase(repository)
         )
 
         setupRecyclerView()

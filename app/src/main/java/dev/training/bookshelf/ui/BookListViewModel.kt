@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BookListViewModel(
-    private val searchBooks: SearchBooksUseCase,
-    private val refreshBooks: RefreshBooksUseCase
+    private val searchBooksUseCase: SearchBooksUseCase,
+    private val refreshBooksUseCase: RefreshBooksUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Book>>>(UiState.Loading)
@@ -35,8 +35,8 @@ class BookListViewModel(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             _uiState.value = UiState.Loading
-            val refreshResult = refreshBooks(query)
-            searchBooks(query).collect { books ->
+            val refreshResult = refreshBooksUseCase(query)
+            searchBooksUseCase(query).collect { books ->
                 _uiState.value = when {
                     books.isNotEmpty() -> UiState.Success(books)
                     refreshResult is BookResult.Failure -> UiState.Error(refreshResult.error.toUserMessage())
