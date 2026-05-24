@@ -10,6 +10,7 @@ import dev.training.bookshelf.model.BookResult
 import dev.training.bookshelf.model.UiState
 import dev.training.bookshelf.model.toUserMessage
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
