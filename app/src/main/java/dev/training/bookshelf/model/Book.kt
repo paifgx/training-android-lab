@@ -1,7 +1,7 @@
 package dev.training.bookshelf.model
 
 /**
- * Represents a book from the Google Books API.
+ * Represents a book in the Bookshelf domain.
  *
  * Tips:
  * - In Java, this would be a POJO with getters/setters, a constructor, equals/hashCode/toString.
