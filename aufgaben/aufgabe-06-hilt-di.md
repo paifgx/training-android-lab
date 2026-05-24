@@ -82,6 +82,11 @@ Erzeuge oder analysiere mindestens zwei typische Hilt-Fehler:
 - Module sind sinnvoll getrennt
 - Mindestens zwei Hilt-Fehler wurden verstanden oder dokumentiert
 
+## Erweiterte Musterlösung
+
+Branch: `task/06-hilt-di-extended`  
+Tag: `task-06-extended-done`
+
 ## Musterlösung
 
 Branch: `task/06-hilt-di`  
