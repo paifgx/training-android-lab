@@ -43,8 +43,8 @@ class BookListViewModelTest {
     }
 
     private fun createViewModel(): BookListViewModel = BookListViewModel(
-        searchBooks = SearchBooksUseCase(repository),
-        refreshBooks = RefreshBooksUseCase(repository)
+        searchBooksUseCase = SearchBooksUseCase(repository),
+        refreshBooksUseCase = RefreshBooksUseCase(repository)
     )
 
     @Test
