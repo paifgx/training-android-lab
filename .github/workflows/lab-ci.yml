@@ -1,0 +1,66 @@
+name: Lab CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'task/**'
+      - 'solution/**'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'
+
+jobs:
+  verify-branches:
+    name: ${{ matrix.ref }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ref: main
+            task: ./gradlew clean assembleDebug
+          - ref: task/01-kotlin-basics
+            task: ./gradlew clean assembleDebug
+          - ref: task/02-mvvm-repository
+            task: ./gradlew clean assembleDebug
+          - ref: task/03-retrofit-service
+            task: ./gradlew clean assembleDebug
+          - ref: task/04-room-persistenz
+            task: ./gradlew clean assembleDebug
+          - ref: task/05-single-source-truth
+            task: ./gradlew clean assembleDebug
+          - ref: task/06-hilt-di
+            task: ./gradlew clean assembleDebug
+          - ref: task/07-testing
+            task: ./gradlew clean assembleDebug testDebugUnitTest
+          - ref: task/08-final-integration
+            task: ./gradlew clean assembleDebug testDebugUnitTest
+          - ref: solution/final
+            task: ./gradlew clean assembleDebug testDebugUnitTest
+          - ref: solution/extended
+            task: ./gradlew clean assembleDebug testDebugUnitTest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Verify branch
+        run: ${{ matrix.task }} --no-daemon --stacktrace
