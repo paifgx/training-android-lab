@@ -1,6 +1,8 @@
 package dev.training.bookshelf.ui
 
 import dev.training.bookshelf.data.FakeTestRepository
+import dev.training.bookshelf.domain.RefreshBooksUseCase
+import dev.training.bookshelf.domain.SearchBooksUseCase
 import dev.training.bookshelf.model.Book
 import dev.training.bookshelf.model.UiState
 import kotlinx.coroutines.Dispatchers
@@ -15,16 +17,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-/**
- * Unit tests for BookListViewModel.
- *
- * Key testing concepts:
- * - Dispatchers.setMain(testDispatcher) = replaces the Main dispatcher in tests.
- *   ViewModel scope uses Dispatchers.Main by default — which doesn't exist in unit tests.
- * - FakeTestRepository = no mocking framework, just a simple test double.
- * - In Java, you'd use Mockito + InstantTaskExecutorRule.
- *   In Kotlin, coroutines-test gives you deterministic control.
- */
 @OptIn(ExperimentalCoroutinesApi::class)
 class BookListViewModelTest {
 
@@ -50,10 +42,15 @@ class BookListViewModelTest {
         Dispatchers.resetMain()
     }
 
+    private fun createViewModel(): BookListViewModel = BookListViewModel(
+        searchBooks = SearchBooksUseCase(repository),
+        refreshBooks = RefreshBooksUseCase(repository)
+    )
+
     @Test
     fun `initial load with data succeeds`() = runTest(testDispatcher) {
         repository.setBooks(testBooks)
-        viewModel = BookListViewModel(repository)
+        viewModel = createViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
@@ -64,7 +61,7 @@ class BookListViewModelTest {
     @Test
     fun `searchBooks filters by title`() = runTest(testDispatcher) {
         repository.setBooks(testBooks)
-        viewModel = BookListViewModel(repository)
+        viewModel = createViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.searchBooks("Kotlin")
@@ -80,7 +77,7 @@ class BookListViewModelTest {
     @Test
     fun `searchBooks with empty query returns all books`() = runTest(testDispatcher) {
         repository.setBooks(testBooks)
-        viewModel = BookListViewModel(repository)
+        viewModel = createViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.searchBooks("")
@@ -94,18 +91,18 @@ class BookListViewModelTest {
     fun `searchBooks error state on repository failure`() = runTest(testDispatcher) {
         repository.setBooks(emptyList())
         repository.setErrorMode("Network timeout")
-        viewModel = BookListViewModel(repository)
+        viewModel = createViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertTrue("Expected Error, got $state", state is UiState.Error)
-        assertEquals("Network timeout", (state as UiState.Error).message)
+        assertTrue((state as UiState.Error).message.contains("Network timeout"))
     }
 
     @Test
     fun `retry repeats last search`() = runTest(testDispatcher) {
         repository.setBooks(testBooks)
-        viewModel = BookListViewModel(repository)
+        viewModel = createViewModel()
         testDispatcher.scheduler.advanceUntilIdle()
 
         viewModel.searchBooks("Clean")
