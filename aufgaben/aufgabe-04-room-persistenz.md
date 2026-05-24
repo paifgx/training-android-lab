@@ -55,7 +55,7 @@ Schreibe bidirektionale Mapper:
 
 ## Hinweise & Tipps
 
-- **GreenDao → Room Migration:** Dieser Schritt ist exakt das, was ihr bei AMCON vorhabt. Die Konzepte sind identisch (Entity, DAO, Database), aber Room nutzt Annotation Processing (KSP) statt Code-Generierung.
+- **GreenDao → Room Migration:** Dieser Schritt zeigt die Migration von GreenDao zu Room. Die Konzepte sind identisch (Entity, DAO, Database), aber Room nutzt Annotation Processing (KSP) statt Code-Generierung.
 - **Drei Modellebenen:** Network (DTO) ↔ Database (Entity) ↔ Domain (Book). Jede Ebene hat eigene Typen. Keine direkte Kopplung.
 - **TypeConverter:** In GreenDao würdet ihr die Liste als Text-Spalte oder Join-Tabelle abbilden. Room's TypeConverter ist eleganter — eine Annotation und fertig.
 - **`Flow` als Return-Type:** Room beobachtet die Tabelle. Wenn sich die Daten ändern (Insert, Delete), emittiert Room automatisch ein Update. Kein manuelles Refresh nötig.

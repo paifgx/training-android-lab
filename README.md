@@ -1,6 +1,7 @@
-# Bookshelf — AMCON Android Training
+# Bookshelf — Android Training Lab
 
-Eine Android-Trainings-App für den Kurs **AMCON Android (26.–29.05.2026)**.
+Ein schrittweises Android-Trainingsprojekt: Kotlin, MVVM, Retrofit, Room, Hilt.
+Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklung einsteigen.
 
 ## Konzept
 
@@ -11,7 +12,7 @@ Eine Android-Trainings-App für den Kurs **AMCON Android (26.–29.05.2026)**.
 | Technologie | Zweck |
 |---|---|
 | Kotlin 1.9.25 | Programmiersprache |
-| Android SDK 34 (MinSdk 25) | Plattform (wie AMCON) |
+| Android SDK 34 (MinSdk 25) | Plattform |
 | ViewBinding + XML | UI (kein Compose) |
 | MVVM + StateFlow | Architektur |
 | Retrofit 2.11 + Moshi | Netzwerk |
@@ -65,4 +66,4 @@ cd bookshelf
 - **Es führt nicht nur ein Weg nach Rom** — eigene Lösungsansätze sind erwünscht
 - **Aufbauend** — jede Aufgabe baut auf der vorherigen auf
 - **Offline-First** — die App funktioniert auch ohne Netzwerk (gecachte Daten)
-- **Praxisnah** — exakt die Technologien, die bei AMCON zum Einsatz kommen
+- **Praxisnah** — produktionsnahe Technologien und Architektur
