@@ -42,10 +42,18 @@ object NetworkModule {
     }
 
     @Provides
+    @OpenLibraryBaseUrl
+    fun provideOpenLibraryBaseUrl(): String = "https://openlibrary.org/"
+
+    @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(
+        moshi: Moshi,
+        okHttpClient: OkHttpClient,
+        @OpenLibraryBaseUrl baseUrl: String
+    ): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://openlibrary.org/")
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
