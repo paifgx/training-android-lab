@@ -64,7 +64,7 @@ Schreibe eine Extension `Exception.toNetworkError(): NetworkError`, die Retrofit
 
 ## Hinweise & Tipps
 
-- **Open Library statt Google Books:** Open Library braucht für diesen Endpoint keinen API-Key und ist damit für Trainingsgruppen robuster.
+- **Open Library:** Der Search-Endpoint braucht keinen API-Key und ist damit für Trainingsgruppen robuster.
 - **DTOs ≠ Domain-Modelle:** Die JSON-Struktur der API und deine App-Struktur werden sich mit der Zeit auseinanderentwickeln. Halte sie getrennt.
 - **`suspend fun`** in Retrofit: Der Netzwerk-Call ist asynchron. Keine Callback-Hölle wie in Java. Der Aufrufer entscheidet über den Dispatcher.
 - **Moshi vs Gson:** Moshi ist Kotlin-first, kleiner, schneller. Gson funktioniert, aber Moshi unterstützt Nullability und Default-Werte nativ.
