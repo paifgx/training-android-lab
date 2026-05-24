@@ -19,7 +19,7 @@ Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklun
 | Room 2.6.1 | Persistenz |
 | Hilt 2.52 | Dependency Injection |
 | Coil 2.7 | Image Loading |
-| JUnit 5 + Turbine | Testing |
+| JUnit 4 + kotlinx-coroutines-test | Testing |
 
 ### Aufbau
 
@@ -31,7 +31,8 @@ aufgaben/              ← Aufgabenblätter (Markdown)
 ├── aufgabe-04-room-persistenz.md
 ├── aufgabe-05-single-source-truth.md
 ├── aufgabe-06-hilt-di.md
-└── aufgabe-07-testing.md
+├── aufgabe-07-testing.md
+└── aufgabe-08-final-integration.md
 
 docs/
 └── branch-guide.md    ← Wie man Branches nutzt

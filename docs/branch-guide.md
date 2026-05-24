@@ -16,7 +16,8 @@ Dieses Repository nutzt Branches, um Aufgaben und Musterlösungen zu verwalten.
 | `task/05-single-source-truth` | Integration: API → Room → UI offline-first | `task-05-done` |
 | `task/06-hilt-di` | Dependency Injection: Hilt Module, Scopes | `task-06-done` |
 | `task/07-testing` | Unit-Tests: FakeRepo, ViewModel, Mapper | `task-07-done` |
-| `solution/final` | **Komplettlösung** — alles integriert | `final-solution` |
+| `task/08-final-integration` | Abschlussreview: Integration, Review, Transfer | `task-08-done` |
+| `solution/final` | **Komplettlösung** — stabiler Alias des finalen Stands | `final-solution` |
 
 ### Workflow
 
