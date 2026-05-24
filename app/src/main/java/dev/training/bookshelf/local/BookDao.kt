@@ -26,6 +26,9 @@ interface BookDao {
     @Query("SELECT * FROM books WHERE id = :id")
     fun getBookById(id: String): kotlinx.coroutines.flow.Flow<BookEntity?>
 
+    @Query("SELECT * FROM books ORDER BY cachedAt DESC")
+    fun getAllBooks(): kotlinx.coroutines.flow.Flow<List<BookEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(books: List<BookEntity>)
 
