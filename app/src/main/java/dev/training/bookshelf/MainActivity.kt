@@ -1,8 +1,8 @@
-package de.gfu.training.bookshelf
+package dev.training.bookshelf
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import de.gfu.training.bookshelf.databinding.ActivityMainBinding
+import dev.training.bookshelf.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

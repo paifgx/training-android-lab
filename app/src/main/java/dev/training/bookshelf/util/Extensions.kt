@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.util
+package dev.training.bookshelf.util
 
 /**
  * Extension functions for common string operations.

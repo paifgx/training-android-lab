@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.model
+package dev.training.bookshelf.model
 
 /**
  * Sealed hierarchy for network/API errors.

@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.model
+package dev.training.bookshelf.model
 
 /**
  * Represents a book from the Google Books API.
