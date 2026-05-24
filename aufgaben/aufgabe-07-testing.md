@@ -80,6 +80,11 @@ Teste Grenzfälle deiner Extension Functions.
 - Mapper sind gegen Null-/Edge-Cases abgesichert
 - FakeRepository ist verständlich und bewusst eingesetzt
 
+## Erweiterte Musterlösung
+
+Branch: `task/07-testing-extended`  
+Tag: `task-07-extended-done`
+
 ## Musterlösung
 
 Branch: `task/07-testing`  
