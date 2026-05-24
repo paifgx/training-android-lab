@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.model
+package dev.training.bookshelf.model
 
 sealed interface NetworkError {
     data class HttpError(val code: Int, val message: String) : NetworkError

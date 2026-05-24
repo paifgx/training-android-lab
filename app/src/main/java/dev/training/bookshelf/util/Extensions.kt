@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.util
+package dev.training.bookshelf.util
 
 fun String?.isNotNullOrBlank(): Boolean = !this.isNullOrBlank()
 

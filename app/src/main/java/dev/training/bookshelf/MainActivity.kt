@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf
+package dev.training.bookshelf
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,11 +6,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import de.gfu.training.bookshelf.data.FakeBookRepository
-import de.gfu.training.bookshelf.databinding.ActivityMainBinding
-import de.gfu.training.bookshelf.model.UiState
-import de.gfu.training.bookshelf.ui.BookAdapter
-import de.gfu.training.bookshelf.ui.BookListViewModel
+import dev.training.bookshelf.data.FakeBookRepository
+import dev.training.bookshelf.databinding.ActivityMainBinding
+import dev.training.bookshelf.model.UiState
+import dev.training.bookshelf.ui.BookAdapter
+import dev.training.bookshelf.ui.BookListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

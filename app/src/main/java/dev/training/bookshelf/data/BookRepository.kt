@@ -1,6 +1,6 @@
-package de.gfu.training.bookshelf.data
+package dev.training.bookshelf.data
 
-import de.gfu.training.bookshelf.model.Book
+import dev.training.bookshelf.model.Book
 import kotlinx.coroutines.flow.Flow
 
 /**

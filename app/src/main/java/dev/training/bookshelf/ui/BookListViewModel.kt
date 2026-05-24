@@ -1,10 +1,10 @@
-package de.gfu.training.bookshelf.ui
+package dev.training.bookshelf.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.gfu.training.bookshelf.data.BookRepository
-import de.gfu.training.bookshelf.model.Book
-import de.gfu.training.bookshelf.model.UiState
+import dev.training.bookshelf.data.BookRepository
+import dev.training.bookshelf.model.Book
+import dev.training.bookshelf.model.UiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

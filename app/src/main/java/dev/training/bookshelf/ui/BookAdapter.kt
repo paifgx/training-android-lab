@@ -1,4 +1,4 @@
-package de.gfu.training.bookshelf.ui
+package dev.training.bookshelf.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import de.gfu.training.bookshelf.databinding.ItemBookBinding
-import de.gfu.training.bookshelf.model.Book
-import de.gfu.training.bookshelf.util.formatAuthors
+import dev.training.bookshelf.databinding.ItemBookBinding
+import dev.training.bookshelf.model.Book
+import dev.training.bookshelf.util.formatAuthors
 
 class BookAdapter : ListAdapter<Book, BookAdapter.BookViewHolder>(BookDiffCallback) {
 
