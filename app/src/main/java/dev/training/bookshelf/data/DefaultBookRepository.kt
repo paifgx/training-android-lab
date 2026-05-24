@@ -5,20 +5,16 @@ import dev.training.bookshelf.local.toDomainModel
 import dev.training.bookshelf.local.toDomainModels
 import dev.training.bookshelf.local.toEntities
 import dev.training.bookshelf.model.Book
+import dev.training.bookshelf.model.BookResult
+import dev.training.bookshelf.model.NetworkError
 import dev.training.bookshelf.network.OpenLibraryApiService
 import dev.training.bookshelf.network.toDomainModels
+import dev.training.bookshelf.network.toNetworkError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Real repository: API → Room → UI (Single Source of Truth).
- *
- * The UI observes Room. The repository refreshes Room from the API.
- * If the live API is unavailable or rate-limited, local fallback books keep the
- * training app usable without changing the UI or ViewModel.
- */
 @Singleton
 class DefaultBookRepository @Inject constructor(
     private val apiService: OpenLibraryApiService,
@@ -26,23 +22,29 @@ class DefaultBookRepository @Inject constructor(
 ) : BookRepository {
 
     override fun getBooks(query: String): Flow<List<Book>> =
-        bookDao.getBooksByQuery(query).map { entities ->
-            entities.toDomainModels()
-        }
+        bookDao.getBooksByQuery(query).map { entities -> entities.toDomainModels() }
 
     override fun getBook(id: String): Flow<Book?> =
         bookDao.getBookById(id).map { it?.toDomainModel() }
 
-    override suspend fun refreshBooks(query: String) {
-        if (query.isBlank()) return
+    override suspend fun refreshBooks(query: String): BookResult<Unit> {
+        if (query.isBlank()) return BookResult.Success(Unit)
 
-        val books = runCatching {
-            apiService.searchBooks(query).toDomainModels()
-        }.getOrElse {
-            FallbackBooks.search(query)
-        }
-
-        bookDao.deleteByQuery(query)
-        bookDao.insertAll(books.toEntities(query))
+        return runCatching { apiService.searchBooks(query).toDomainModels() }
+            .fold(
+                onSuccess = { books ->
+                    bookDao.deleteByQuery(query)
+                    bookDao.insertAll(books.toEntities(query))
+                    BookResult.Success(Unit)
+                },
+                onFailure = { throwable ->
+                    val fallback = FallbackBooks.search(query)
+                    if (fallback.isNotEmpty()) {
+                        bookDao.deleteByQuery(query)
+                        bookDao.insertAll(fallback.toEntities(query))
+                    }
+                    BookResult.Failure((throwable as? Exception)?.toNetworkError() ?: NetworkError.Unknown)
+                }
+            )
     }
 }
