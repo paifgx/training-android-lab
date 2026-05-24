@@ -63,17 +63,40 @@ Siehe [`docs/branch-guide.md`](docs/branch-guide.md).
 - Android Studio Hedgehog (2023.1.1) oder neuer
 - JDK 17 oder Android Studio Embedded JDK
 - Android SDK mit Platform 34
+- Git-Zugriff auf das private Repository: `https://github.com/paifgx/training-android-lab`
 
 ## Schnellstart
 
 ```bash
 # Projekt klonen
-git clone <repo-url> bookshelf
+git clone https://github.com/paifgx/training-android-lab.git bookshelf
 cd bookshelf
+
+# Startpunkt für eigene Arbeit
+git checkout main
 
 # Öffne in Android Studio oder baue via CLI:
 ./gradlew assembleDebug
 ```
+
+### CLI-/Setup-Hinweise
+
+Wenn Android Studio den SDK-Pfad nicht automatisch setzt, kopiere `local.properties.sample` nach `local.properties` und passe `sdk.dir` lokal an. `local.properties` wird nicht committed.
+
+```bash
+# Linux/macOS Beispiel
+export JAVA_HOME=/path/to/jdk17
+export ANDROID_HOME=/path/to/Android/Sdk
+./gradlew clean assembleDebug
+```
+
+Typische Setup-Probleme:
+
+- **Falsche Gradle-JVM:** In Android Studio auf JDK 17 bzw. Embedded JDK stellen.
+- **SDK 34 fehlt:** Über SDK Manager installieren.
+- **Dependency-Download blockiert:** Proxy/VPN/Maven-Zugriff prüfen.
+- **Emulator startet nicht:** Erst CLI-Build prüfen, dann Device/Emulator debuggen.
+- **Eigener Stand hängt:** Passenden `task/XX-*`-Branch auschecken und von dort weiterarbeiten.
 
 ## Didaktische Prinzipien
 
