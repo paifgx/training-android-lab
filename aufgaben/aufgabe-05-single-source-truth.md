@@ -5,7 +5,7 @@
 
 ## Lernziel
 
-Du verbindest Open Library API und Room zu einer Offline-First-Architektur: Die UI beobachtet Room, das Repository aktualisiert Room aus dem Netzwerk.
+Du verbindest Open Library API und Room zu einer Offline-First-Architektur: Die UI beobachtet Room, UseCases kapseln den Anwendungsfall, und das Repository aktualisiert Room aus dem Netzwerk.
 
 ## Kontext
 
@@ -23,8 +23,16 @@ Implementiere ein echtes Repository, das:
 - API-Daten über Mapper in Domain und Entity überführt
 - alte Cache-Einträge zur Suche ersetzt
 - neue Ergebnisse in Room speichert
+- Erfolg oder Fehler als Result-Typ zurückgibt
 
-### B) UI an echtes Repository hängen
+### B) UseCases an echtes Repository hängen
+
+Die bestehenden UseCases sollen weiter die Schnittstelle für das ViewModel bleiben:
+
+- `SearchBooksUseCase` liest aus Room über das Repository
+- `RefreshBooksUseCase` triggert API → Room und verarbeitet den Result-Typ
+
+### C) UI an echtes Repository hängen
 
 Verdrahte in der Activity zunächst manuell:
 
@@ -35,7 +43,7 @@ Verdrahte in der Activity zunächst manuell:
 
 **Ziel:** Hilt kommt erst später. Hier soll sichtbar werden, welche Objekte überhaupt gebraucht werden.
 
-### C) Fallback bei API-Ausfall
+### D) Fallback bei API-Ausfall
 
 Open Library ist öffentlich verfügbar, aber Training muss trotzdem auch bei Netzwerkproblemen funktionieren. Ergänze oder nutze lokalen Fallback:
 
@@ -45,7 +53,7 @@ Open Library ist öffentlich verfügbar, aber Training muss trotzdem auch bei Ne
 
 Die UI soll weiterhin über Room aktualisiert werden.
 
-### D) Manuell testen
+### E) Manuell testen
 
 Teste mindestens:
 
@@ -75,6 +83,8 @@ Teste mindestens:
 
 - Suche aktualisiert Room
 - UI beobachtet Room
+- ViewModel nutzt UseCases, nicht direkt Repository
+- Refresh liefert einen Result-Typ
 - Netzwerkfehler zerstören die App nicht
 - Fallback oder Cache hält die Demo lauffähig
 - Projekt baut und App startet
