@@ -80,6 +80,11 @@ Führe aus:
 - Mindestens drei Transferentscheidungen sind notiert
 - Mindestens ein Verbesserungs- oder Modernisierungspfad ist beschrieben
 
+## Erweiterte Musterlösung
+
+Branch: `task/08-final-integration-extended`  
+Tag: `task-08-extended-done`
+
 ## Musterlösung
 
 Branch: `task/08-final-integration`  

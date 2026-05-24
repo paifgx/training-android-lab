@@ -91,6 +91,11 @@ Konfiguriere:
 - Base URL zeigt auf Open Library
 - Projekt baut
 
+## Erweiterte Musterlösung
+
+Branch: `task/03-retrofit-service-extended`  
+Tag: `task-03-extended-done`
+
 ## Musterlösung
 
 Branch: `task/03-retrofit-service`  

@@ -18,6 +18,8 @@ Dieses Repository nutzt Branches, um Aufgaben und Musterlösungen zu verwalten.
 | `task/07-testing` | Unit-Tests: FakeRepo, ViewModel, Mapper | `task-07-done` |
 | `task/08-final-integration` | Abschlussreview: Integration, Review, Transfer | `task-08-done` |
 | `solution/final` | **Komplettlösung** — stabiler Alias des finalen Stands | `final-solution` |
+| `task/01-...-extended` bis `task/08-...-extended` | Erweiterte Musterlösungen für Aufbau-/Expert-Aufgaben | `task-01-extended-done` … `task-08-extended-done` |
+| `solution/extended` | Vollständiger erweiterter Endstand | `extended-solution` |
 
 ### Workflow
 
@@ -51,3 +53,8 @@ git checkout task/02-mvvm-repository -- app/src/main/java/dev/training/bookshelf
 - **Branch-Namen:** `mein/XX-beschreibung` oder `vorname/XX-beschreibung`.
 - **Tags** markieren den exakten Stand einer Musterlösung. Auch als ZIP herunterladbar.
 - **Wenn du hinterherhinkst:** Kein Problem. Checke den aktuellen Task-Branch aus und arbeite von dort weiter.
+
+
+### Erweiterte Musterlösungen
+
+Für schnelle Teilnehmer gibt es pro Aufgabe zusätzlich einen Extended-Branch. Diese Branches sind optional und dienen als Vergleichslösung für Aufbau- und Expert-/KI-Tasks. Der Pflichtpfad bleibt weiterhin `task/01-*` bis `task/08-*`.
