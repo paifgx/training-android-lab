@@ -1,6 +1,7 @@
 # Aufgabe 08: Integration, Review & Transfer
 
-**Tag 4** | ⏱ ca. 45 Minuten | 🎯 Abschlussübung + Code-Review
+**Tag 4** | Pflicht: ca. 45–60 Minuten | Aufbau/Expert: +45–60 Minuten  
+**Format:** Review, Pair-Diskussion, Trainer-Moderation
 
 ---
 
@@ -10,82 +11,91 @@ Du überprüfst die komplette App kritisch: Architekturfluss, Fehlerfälle, Test
 
 ## Kontext
 
-Die App hat jetzt alle Schichten: Kotlin-Modelle, MVVM, Retrofit, Room, Hilt und Unit-Tests. In dieser Aufgabe geht es nicht mehr um ein neues Framework, sondern um saubere Integration und Transferfähigkeit.
+Die App hat jetzt alle Schichten: Kotlin-Modelle, MVVM, Retrofit/Open Library, Room, Hilt und Unit-Tests. In dieser Aufgabe geht es nicht mehr um ein neues Framework, sondern um Integration, Qualität und Transfer.
 
-**Was existiert:** End-to-End-App mit API → Room → UI, Hilt, Tests.
-
-**Was fehlt:** Bewusster Qualitätscheck, Refactoring-Entscheidungen, Transfernotizen.
-
-## Aufgabe
+## Pflichtteil — gemeinsamer Mindeststand
 
 ### A) Architekturfluss nachvollziehen
 
-Zeichne oder notiere den Datenfluss:
+Beschreibe den Datenfluss ohne Code:
 
-1. Nutzer startet Suche in der UI
+1. Nutzer startet Suche
 2. ViewModel setzt Loading-State
-3. Repository lädt per Retrofit
+3. Repository fragt API oder Fallback
 4. Repository schreibt nach Room
 5. UI beobachtet Room via Flow
 6. RecyclerView zeigt Daten
-7. Fehlerfall: Netzwerk down, Cache vorhanden/nicht vorhanden
+7. Fehlerfall: Netzwerk down, Cache/Fallback vorhanden
 
 ### B) Kritischer Code-Review
 
-Prüfe den Code auf folgende Punkte:
+Prüfe:
 
-- Gibt es Stellen, an denen UI direkt Infrastruktur kennt?
+- Kennt UI Infrastrukturdetails?
 - Sind DTO, Entity und Domain sauber getrennt?
-- Sind Coroutines an einen Lifecycle gebunden?
-- Wird ein Flow mehrfach gesammelt, obwohl nur ein aktiver Suchjob gewünscht ist?
-- Sind Netzwerkfehler für Nutzer verständlich?
-- Sind Hilt-Scopes sinnvoll gesetzt?
-- Sind Mapper getestet?
+- Sind Coroutines lifecycle-aware?
+- Werden alte Suchjobs gecancelt?
+- Ist Fallback-Verhalten nachvollziehbar?
+- Sind Hilt-Scopes sinnvoll?
+- Sind Mapper sinnvoll getestet?
 
-### C) Refactoring-Optionen sammeln
+### C) Transfernotizen
 
-Notiere mindestens drei mögliche Verbesserungen, ohne sie zwingend umzusetzen:
+Notiere für eine bestehende Legacy-App:
 
-- Suchdebounce statt IME-only
-- Detail-Screen für einzelne Bücher
-- Favoriten lokal speichern
-- Pagination (`page`, `limit` bzw. weitere Open-Library-Parameter)
-- Separate UI-Modelle statt Domain direkt im Adapter
-- Repository-Ergebnis als `Result`/sealed type statt Exception-Pfad
-
-### D) Transfer auf Legacy-Projekte
-
-Übertrage die Struktur gedanklich auf eine bestehende App:
-
-- Welche Klasse wäre bei euch das Repository?
-- Wo sitzt aktuell GreenDao?
-- Welche Schicht dürfte Retrofit kennen?
-- Wo würdet ihr Hilt zuerst einführen?
+- Welche Klasse wäre dort Repository?
+- Wo sitzt aktuell Persistenz?
+- Welche Schicht darf Netzwerk kennen?
+- Wo würdest du DI zuerst einführen?
 - Welche Tests geben bei Migration am meisten Sicherheit?
 
-### E) Abschlussvalidierung
+### D) Abschlussvalidierung
 
 Führe aus:
 
-```bash
-./gradlew clean assembleDebug testDebugUnitTest
-```
+- Clean Build
+- Unit-Tests
+- App starten
+- Suche ausführen
+- Netzwerk aus / Fallback prüfen
 
-Erwartung: Build und Tests laufen grün.
+## Aufbauaufgaben
 
-## Hinweise & Tipps
+1. Ergänze eine kleine „About/Debug“-Anzeige: API oder Fallback?
+2. Erstelle eine Risiko-/Nutzen-Matrix für Migration: Kotlin, Room, Hilt, Tests.
+3. Formuliere drei Team-Regeln für Repository- und Mapper-Code.
+4. Plane einen nächsten Sprint: Welche 3 Verbesserungen wären realistisch?
+5. Schreibe ein kurzes README-Kapitel „Wie erweitere ich diese App?“
 
-- **Nicht alles refactoren:** Diese Aufgabe ist bewusst ein Review. Entscheide, was wichtig ist — nicht was möglich ist.
-- **Legacy-Transfer:** In echten Apps migriert man selten alles auf einmal. Schichtweise: Mapper/Repository → Room → DI → Tests.
-- **Tests zuerst bei Mappings:** Bei GreenDao→Room-Migration sind Mapper-Tests oft günstiger und wertvoller als UI-Tests.
-- **Hilt nicht überziehen:** Nicht jede kleine Utility-Funktion muss injiziert werden. Hilt für Objekte mit Abhängigkeiten/Lifecycle/Varianten.
-- **Mehrere Wege sind okay:** Ziel ist nicht exakt die Musterlösung, sondern begründete Architekturentscheidungen.
+## Expert-/KI-Tasks
 
-## Wie weiter?
+1. Lasse KI einen Architekturreview erstellen und markiere alle Aussagen, die du belegen kannst oder nicht belegen kannst.
+2. Entwerfe eine robuste Error-UX für „Daten vorhanden, Refresh fehlgeschlagen“.
+3. Skizziere Pagination mit Open Library, ohne die UI an API-Parameter zu koppeln.
+4. Plane eine echte Room-Migration von Version 1 auf Version 2.
+5. Erstelle eine „Do/Don't“-Liste für KI-generierten Android-Code im Team.
 
-→ Branch `task/08-final-integration` zeigt den finalen integrierten Stand.
-→ Branch `solution/final` ist ein stabiler Alias für die Komplettlösung.
+## Trainer-Checkpoints
 
-## Zeitaufwand
+Nach ca. 30 Minuten:
 
-ca. 45 Minuten
+- Können alle den Datenfluss erklären?
+- Gibt es unterschiedliche, aber valide Architekturentscheidungen?
+
+Nach ca. 60 Minuten:
+
+- Hat jede Gruppe Transfernotizen?
+- Welche Risiken wären in einer echten App zuerst relevant?
+
+## Definition of Done
+
+- App baut und Tests laufen grün
+- Datenfluss kann erklärt werden
+- Mindestens drei Transferentscheidungen sind notiert
+- Mindestens ein Verbesserungs- oder Modernisierungspfad ist beschrieben
+
+## Musterlösung
+
+Branch: `task/08-final-integration`  
+Tag: `task-08-done`  
+Stabiler Komplettstand: `solution/final` / `final-solution`

@@ -1,69 +1,104 @@
 # Aufgabe 01: Kotlin-Grundlagen für Java-Entwickler
 
-**Tag 1** | ⏱ ca. 45 Minuten | 🎯 Selbstständig + Pair-Programming
+**Tag 1** | Pflicht: ca. 60–75 Minuten | Aufbau/Expert: +30–45 Minuten  
+**Format:** Einzelarbeit oder Pair-Programming
 
 ---
 
 ## Lernziel
 
-Du verstehst die zentralen Kotlin-Sprachkonstrukte, die du für die restlichen Aufgaben brauchst — und erkennst, wie sie deine Java-Erfahrung übersetzen.
+Du übersetzt zentrale Java-Denkmodelle in Kotlin: POJO → `data class`, Enum/State-Holder → sealed hierarchy, Utility-Klasse → Extension Functions, nullable Referenzen → explizite Nullability.
 
 ## Kontext
 
-Das Projekt `main` enthält ein leeres, lauffähiges Android-Projekt. Deine Aufgabe ist es, die ersten Kotlin-Dateien anzulegen, die das Fundament für alle folgenden Aufgaben bilden.
+`main` enthält ein lauffähiges Android-Projekt mit Platzhalter-UI. Es fehlen noch die Kotlin-Bausteine, auf denen alle späteren Aufgaben aufbauen.
 
-**Was existiert:** `MainActivity.kt` (Platzhalter), `build.gradle.kts` mit allen Dependencies.
+## Pflichtteil — gemeinsamer Mindeststand
 
-**Was fehlt:** Domain-Modelle, Error-Types, Utility-Funktionen.
+### A) Domain-Modell `Book`
 
-## Aufgabe
+Lege ein Domain-Modell für ein Buch an. Es soll mindestens enthalten:
 
-### A) Book — Data Class statt POJO
+- stabile ID
+- Titel
+- Autorenliste
+- Beschreibung
+- optionale Cover-URL
+- optionales Veröffentlichungsjahr/-datum
 
-Erstelle ein `data class Book` mit folgenden Feldern:
-- `id: String`
-- `title: String`
-- `authors: List<String>`
-- `description: String`
-- `thumbnailUrl: String?`
-- `publishedDate: String?`
+**Ziel:** Ein unveränderliches Modell, das in UI, Repository und Tests verwendet werden kann.
 
-### B) UiState — Sealed Interface statt Enum + State-Holder
+### B) UI-State modellieren
 
-Erstelle ein `sealed interface UiState<out T>` mit drei Ausprägungen:
-- `Loading` (keine Daten)
-- `Success<T>` (enthält `data: T`)
-- `Error` (enthält `message: String`)
+Erstelle eine typsichere UI-State-Hierarchie für:
 
-### C) NetworkError — Typsichere Fehlerhierarchie
+- Laden
+- Erfolg mit Daten
+- Fehler mit Nachricht
 
-Erstelle ein `sealed interface NetworkError` mit:
-- `HttpError(code, message)`
-- `NetworkUnavailable(cause)`
-- `ParsingError(cause)`
-- `Unknown`
+**Ziel:** Die UI soll später nicht mit losen Boolean-Flags wie `isLoading`, `hasError`, `data != null` arbeiten müssen.
+
+### C) Fehlerdomäne vorbereiten
+
+Lege eine kleine Fehlerhierarchie für Netzwerk-/API-Probleme an:
+
+- HTTP-Fehler
+- Netzwerk nicht erreichbar
+- Parsing-/JSON-Fehler
+- unbekannter Fehler
+
+**Ziel:** Fehler werden später nicht nur als rohe Exception weitergereicht.
 
 ### D) Extension Functions
 
-Erstelle Extension Functions:
-- `String?.isNotNullOrBlank(): Boolean`
-- `String.truncate(maxLength: Int): String`
-- `List<String>.formatAuthors(): String` (leer → "Unknown Author", 1 → nur Name, >3 → "A, B, C et al.")
+Erstelle kleine Extensions für typische UI-/String-Fälle:
 
-## Hinweise & Tipps
+- null/blank prüfen
+- lange Texte kürzen
+- Autorenliste lesbar formatieren
 
-- **Data Class:** Ersetzt POJO + getter/setter + equals/hashCode/toString + copy(). In Java wärst du bei 50+ Zeilen Boilerplate. In Kotlin: eine Zeile.
-- **Sealed Interface:** Wie ein Enum, aber jedes Element kann unterschiedliche Felder haben. Der Compiler erzwingt exhaustive `when`-Ausdrücke — du kannst keinen Fall vergessen.
-- **`String?`** heißt "das kann null sein". Kotlin erzwingt Null-Checks zur Compile-Zeit. Keine NullPointerException mehr zur Laufzeit (wenn du zuhörst).
-- **`object` vs `class`:** `data object Loading` = Singleton, keine Instanz nötig.
-- **Extension Functions:** Hängen Methoden an bestehende Klassen an — ohne Vererbung. `s.isBlank()` statt `StringUtils.isBlank(s)`.
-- **`out T`** in `UiState<out T>` = Kovarianz. `UiState<Nothing>` ist dann ein Subtyp von `UiState<List<Book>>`. Musst du nicht tief verstehen, aber es ist der Grund, warum `Loading` ohne Typ-Parameter funktioniert.
+**Ziel:** Keine statischen Java-Utility-Klassen, sondern idiomatisches Kotlin.
 
-## Wie weiter?
+## Aufbauaufgaben — wenn der Pflichtteil sitzt
 
-→ Branch `task/01-kotlin-basics` zeigt eine mögliche Musterlösung.
-→ Nächste Aufgabe: **Aufgabe 02 — MVVM & Repository**
+1. Ergänze ein zweites Domain-Modell, z. B. `BookSearchQuery` oder `BookId`, und entscheide bewusst: braucht es eine eigene Klasse oder reicht `String`?
+2. Erweitere die Autorenformatierung um Grenzfälle:
+   - 0 Autoren
+   - 1 Autor
+   - 2–3 Autoren
+   - mehr als 3 Autoren
+3. Dokumentiere in Kommentaren, welche Java-Boilerplate durch `data class` wegfällt.
+4. Schreibe für dich selbst 5 Kotlin-Regeln, die du als Java-Entwickler beachten musst.
 
-## Zeitaufwand
+## Expert-/KI-Tasks
 
-ca. 45 Minuten
+1. Lasse dir von KI zwei alternative Modellierungen für `UiState` erklären: sealed class vs sealed interface. Entscheide, welche du hier nutzen würdest und warum.
+2. Prüfe, ob `Book.id` besser als `String`, Value Class oder eigener Typ modelliert wäre. Notiere Vor- und Nachteile.
+3. Erstelle bewusst einen kleinen Nullability-Fehler und lasse dir vom Compiler zeigen, warum Kotlin ihn verhindert.
+4. Vergleiche deine Extensions mit einer klassischen Java-`StringUtils`-Klasse. Was ist lesbarer, was ist riskanter?
+
+## Trainer-Checkpoints
+
+Nach ca. 30 Minuten:
+
+- Haben alle ein kompilierendes Domain-Modell?
+- Sind `val` und `var` verstanden?
+- Gibt es Nullability-Fragen?
+
+Nach ca. 60 Minuten:
+
+- Kann jeder erklären, warum `UiState` kein Enum sein sollte?
+- Hat jeder mindestens eine Extension Function geschrieben?
+
+## Definition of Done
+
+- Projekt baut mit `./gradlew assembleDebug`
+- `Book` ist als Kotlin-Domain-Modell vorhanden
+- UI-State-Hierarchie ist typisiert
+- Fehlerhierarchie ist vorbereitet
+- Extensions sind nutzbar und verständlich
+
+## Musterlösung
+
+Branch: `task/01-kotlin-basics`  
+Tag: `task-01-done`

@@ -1,67 +1,114 @@
-# Aufgabe 02: MVVM-Architektur, ViewModel & Repository
+# Aufgabe 02: MVVM, StateFlow & Repository
 
-**Tag 1** | ⏱ ca. 60 Minuten | 🎯 Selbstständig + Live-Coding-Support
+**Tag 1** | Pflicht: ca. 90–120 Minuten | Aufbau/Expert: +45–60 Minuten  
+**Format:** Pair-Programming empfohlen
 
 ---
 
 ## Lernziel
 
-Du baust die MVVM-Architektur auf: ViewModel mit StateFlow, Repository-Interface, FakeDataSource und eine funktionierende UI mit RecyclerView.
+Du baust eine erste lauffähige Architektur: UI → ViewModel → Repository. Die App zeigt lokale Fake-Daten an, reagiert auf Suchanfragen und unterscheidet Loading, Success, Empty und Error.
 
 ## Kontext
 
-Du hast die Kotlin-Grundlagen aus Aufgabe 01 (Book, UiState, NetworkError, Extensions). Das Projekt hat noch keine Architektur — nur eine leere MainActivity.
+Aus Aufgabe 01 existieren Domain-Modell und UI-State. Jetzt entsteht daraus eine kleine, aber echte Android-App-Struktur.
 
-**Was existiert:** Domain-Modelle, Extension Functions.
-
-**Was fehlt:** ViewModel, Repository, Adapter, Layouts, UI-Logik.
-
-## Aufgabe
+## Pflichtteil — gemeinsamer Mindeststand
 
 ### A) Repository-Interface
 
-Erstelle ein `interface BookRepository` mit:
-- `fun getBooks(query: String): Flow<List<Book>>`
-- `fun getBook(id: String): Flow<Book?>`
-- `suspend fun refreshBooks(query: String)`
+Definiere ein Repository als Vertrag zwischen ViewModel und Datenquelle.
 
-### B) FakeBookRepository
+Es soll:
 
-Implementiere das Interface mit einer `MutableStateFlow<List<Book>>`, die 3–4 Beispielbücher enthält. Die `getBooks`-Methode filtert nach Titel/Autor.
+- Bücher als beobachtbaren Stream liefern
+- ein einzelnes Buch über eine ID liefern können
+- einen Refresh auslösen können
 
-### C) BookListViewModel
+**Ziel:** Das ViewModel hängt nicht an einer konkreten Datenquelle.
 
-Erstelle ein `ViewModel` mit:
-- `uiState: StateFlow<UiState<List<Book>>>`
-- `searchBooks(query: String)` — lädt Daten über das Repository
-- `retry()` — wiederholt die letzte Suche
-- Nutze `viewModelScope.launch { }` für Coroutines
+### B) Fake-Repository
 
-### D) RecyclerView-Adapter
+Implementiere ein In-Memory-Repository mit mehreren Beispielbüchern.
 
-Erstelle einen `BookAdapter : ListAdapter<Book, BookViewHolder>` mit DiffUtil.
-Jeder Eintrag zeigt: Titel, Autoren, Jahr, Cover-Image (Platzhalter reicht).
+Pflichtverhalten:
 
-### E) Layouts & MainActivity
+- leere Suche zeigt alle Beispielbücher
+- Suchtext filtert nach Titel und/oder Autor
+- Refresh ist im Fake zunächst ein No-op
 
-- `activity_main.xml`: SearchBar + RecyclerView + ProgressBar + ErrorView + EmptyView
-- `item_book.xml`: Card mit Cover-Image, Titel, Autoren, Jahr
-- `MainActivity`: Verkabelt ViewModel → UI (manuell, kein Hilt)
+### C) ViewModel
 
-## Hinweise & Tipps
+Erstelle ein ViewModel, das:
 
-- **Warum ein Interface für das Repository?** Im Moment hast du nur FakeBookRepository. Später kommt ein echtes (Retrofit + Room). Die ViewModel-Logik ändert sich nicht — nur die Implementierung.
-- **StateFlow vs LiveData:** StateFlow ist das moderne Äquivalent. Es ist Teil von Kotlin Coroutines, nicht von Android. Es funktioniert auch in reinen Kotlin-Projekten.
-- **`collectLatest { }`** = sammelt Werte aus einem Flow. Wie RxJava's `subscribe()`, aber simpler.
-- **`_uiState` (Mutable) vs `uiState` (Immutable):** Das ist das "Backing Property"-Pattern. Extern darf niemand den State setzen.
-- **ListAdapter + DiffUtil:** Effiziente RecyclerView-Updates. Du musst nicht `notifyDataSetChanged()` rufen — DiffUtil berechnet die Differenz.
-- **ViewBinding:** `ActivityMainBinding.inflate(layoutInflater)` ersetzt `findViewById()`. Type-safe, null-safe.
+- UI-State als `StateFlow` veröffentlicht
+- eine Suche starten kann
+- die letzte Suche für Retry merkt
+- nicht mehrere Such-Collectors parallel laufen lässt
 
-## Wie weiter?
+**Ziel:** Die UI beobachtet nur State. Sie kennt keine Datenquelle.
 
-→ Branch `task/02-mvvm-repository` zeigt eine mögliche Musterlösung.
-→ Nächste Aufgabe: **Aufgabe 03 — Retrofit & Netzwerk**
+### D) RecyclerView-UI
 
-## Zeitaufwand
+Baue eine einfache XML/ViewBinding-UI mit:
 
-ca. 60 Minuten
+- Suchfeld
+- RecyclerView
+- Loading-Anzeige
+- Empty-State
+- Error-State
+- Retry-Button
+
+### E) Adapter
+
+Erstelle einen RecyclerView-Adapter für Bücher.
+
+Pflichtanzeige:
+
+- Titel
+- Autoren
+- Jahr/Datum, falls vorhanden
+- Platzhalter für Cover
+
+## Aufbauaufgaben
+
+1. Suche nicht nur beim IME-Action-Button, sondern zusätzlich über einen separaten Suchbutton.
+2. Ergänze eine klare Empty-State-Message, wenn keine Treffer gefunden werden.
+3. Ergänze einfache Sortierung: Titel alphabetisch oder Jahr absteigend.
+4. Markiere im UI sichtbar, ob gerade Fake-Daten verwendet werden.
+5. Baue bewusst einen Fehlerfall ins FakeRepository ein und teste die Error-UI manuell.
+
+## Expert-/KI-Tasks
+
+1. Lasse KI dein ViewModel auf Flow-/Coroutine-Probleme reviewen. Prüfe speziell: Mehrfach-Collector, Cancellation, State-Konsistenz.
+2. Erweitere den UI-State um einen Zustand, der Daten und Warnung gleichzeitig erlaubt, z. B. „cached data plus error“.
+3. Implementiere einen Debounce für Texteingaben, ohne dass bei jedem Tastendruck sofort gesucht wird.
+4. Vergleiche `StateFlow` mit `LiveData`: Welche Entscheidung würdest du in einer Legacy-App treffen?
+5. Erstelle ein kleines Architekturdiagramm deiner Lösung und vergleiche es im Pair mit jemand anderem.
+
+## Trainer-Checkpoints
+
+Nach ca. 45 Minuten:
+
+- Repository-Interface vorhanden?
+- FakeRepository liefert Daten?
+- Alle verstehen, warum Interface vor Implementierung kommt?
+
+Nach ca. 90 Minuten:
+
+- UI reagiert auf StateFlow?
+- RecyclerView zeigt Daten?
+- Loading/Empty/Error sind als Zustände erkennbar?
+
+## Definition of Done
+
+- Projekt baut
+- Bücher werden aus Fake-Daten angezeigt
+- Suche filtert sichtbar
+- ViewModel hängt nur am Repository-Interface
+- UI-State wird beobachtet, nicht direkt berechnet
+
+## Musterlösung
+
+Branch: `task/02-mvvm-repository`  
+Tag: `task-02-done`

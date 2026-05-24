@@ -1,79 +1,100 @@
-# Aufgabe 07: Unit-Tests
+# Aufgabe 07: Unit-Tests & Test Doubles
 
-**Tag 4** | ⏱ ca. 60 Minuten | 🎯 Selbstständig
+**Tag 4** | Pflicht: ca. 90 Minuten | Aufbau/Expert: +45–60 Minuten  
+**Format:** Einzelarbeit oder Pair-Programming
 
 ---
 
 ## Lernziel
 
-Du schreibst Unit-Tests für die zentralen Komponenten — ohne Android-Gerät, ohne Emulator, ohne Mocking-Framework. Nur Kotlin + Coroutines-Test.
+Du testest zentrale Logik ohne Emulator: ViewModel, Mapper und kleine Utility-Funktionen. Du nutzt Fakes statt sofort ein Mocking-Framework einzuführen.
 
 ## Kontext
 
-Die App ist komplett integriert (Aufgabe 06, Hilt). Jetzt sicherst du die Geschäftslogik mit Tests ab.
+Die App ist integriert und nutzt Hilt. Für Unit-Tests isolieren wir die Logik: kein echtes Netzwerk, keine echte Datenbank, kein Android-Gerät.
 
-**Was existiert:** Vollständige App mit Hilt, Repository, ViewModel, Mapper.
+## Pflichtteil — gemeinsamer Mindeststand
 
-**Was fehlt:** Test-Code in `app/src/test/java/`.
+### A) Fake Repository für Tests
 
-## Aufgabe
+Erstelle ein Test-Repository, das:
 
-### A) FakeTestRepository
+- Daten kontrolliert setzen kann
+- Fehler simulieren kann
+- dasselbe Interface wie das echte Repository implementiert
 
-Erstelle ein `FakeTestRepository : BookRepository` für Tests:
-- `setBooks(books: List<Book>)` — steuert, welche Daten geliefert werden
-- `setErrorMode(message: String)` — simuliert Fehler
-- Interne `MutableStateFlow`, die `getBooks()` und `getBook()` bedient
+### B) ViewModel testen
 
-### B) BookListViewModelTest
+Teste mindestens:
 
-Teste das ViewModel in Isolation:
-- Initialer Zustand: Success mit (ggf. leeren) Daten
-- `searchBooks("Kotlin")` filtert korrekt
-- Leere Query gibt alle Bücher zurück
-- Repository-Fehler führt zu `UiState.Error`
-- `retry()` wiederholt die letzte Suche
+- initialer Load mit Daten
+- Suche filtert korrekt
+- leere Suche liefert alle Testdaten
+- Fehler im Repository führt zu Error-State
+- Retry nutzt die letzte Suche
 
-**Wichtig:** `Dispatchers.setMain(testDispatcher)` im `@Before` und `Dispatchers.resetMain()` im `@After`.
+Achte auf Coroutine-Testsetup für den Main Dispatcher.
 
-### C) EntityMapperTest
+### C) Entity-Mapper testen
 
-Teste die Entity ↔ Domain-Konvertierung:
-- Round-Trip: Book → Entity → Book (verlustfrei?)
-- Null-Thumbnail wird korrekt übertragen
-- Listen-Mapping funktioniert
-- `lastSearchQuery` und `cachedAt` werden gesetzt
+Teste:
 
-### D) DtoMapperTest
+- Domain → Entity
+- Entity → Domain
+- Roundtrip ohne Datenverlust
+- Null-/Optional-Felder
 
-Teste die JSON-DTO → Domain-Konvertierung:
-- Vollständiges DTO → korrektes Book
-- `items = null` → leere Liste
-- `volumeInfo = null` → herausgefiltert
-- `authors = null` → leere Liste
-- `http://` → `https://` Konvertierung
+### D) DTO-Mapper testen
 
-### E) ExtensionsTest
+Teste Open-Library-Mapping:
 
-Teste die Extension Functions auf Edge Cases:
-- Null/Blank-Strings
-- Truncate mit exakter Länge
-- Autor-Formatierung: 0, 1, 3, 4+ Autoren
+- vollständiger DTO
+- fehlende Ergebnisliste
+- fehlender Key
+- fehlender Titel
+- fehlende Autoren
+- fehlende Cover-ID
 
-## Hinweise & Tipps
+### E) Extensions testen
 
-- **Kein Mockito nötig:** In Java testet man oft mit `when(mock.foo()).thenReturn(bar)`. In Kotlin reicht eine einfache Fake-Klasse. Lesbarer, weniger Magie, refactor-safe.
-- **`Dispatchers.setMain()`:** ViewModels nutzen intern `Dispatchers.Main`. Der existiert in Unit-Tests nicht. Du musst ihn durch einen Test-Dispatcher ersetzen. Vergessen = `IllegalStateException`.
-- **`testDispatcher.scheduler.advanceUntilIdle()`**: Führt alle ausstehenden Coroutines aus. Nach diesem Aufruf sind alle asynchronen Operationen abgeschlossen.
-- **`viewModel.uiState.value`**: Liest den aktuellen StateFlow-Wert synchron. Kein `await()` nötig, wenn du vorher `advanceUntilIdle()` aufgerufen hast.
-- **Teststruktur:** Arrange → Act → Assert. Jeder Test testet EIN Verhalten. Lieber 5 kleine Tests als 1 riesiger.
-- **Turbine (optional):** Die Library `app.cash.turbine` macht Flow-Testing eleganter. Ihr könnt sie nutzen, müsst aber nicht.
+Teste Grenzfälle deiner Extension Functions.
 
-## Wie weiter?
+## Aufbauaufgaben
 
-→ Branch `task/07-testing` zeigt eine mögliche Musterlösung.
-→ Branch `solution/final` enthält den kompletten Endzustand.
+1. Ergänze Tests für Fallback-Daten bei API-Fehlern.
+2. Teste Sortierung oder Filterlogik getrennt vom ViewModel.
+3. Baue absichtlich einen fehlschlagenden Test und nutze ihn als Debuggingübung.
+4. Ergänze sprechende Testdaten statt generischer `Book("1", ...)`-Objekte.
+5. Erstelle eine kleine Test-Matrix: Was testen wir nicht und warum?
 
-## Zeitaufwand
+## Expert-/KI-Tasks
 
-ca. 60 Minuten
+1. Lasse KI Testfälle für deinen Mapper vorschlagen. Übernimm nur die, die einen echten Fehler finden könnten.
+2. Vergleiche Fake vs Mock vs Stub am konkreten Repository-Beispiel.
+3. Entwerfe einen Integrationstest mit MockWebServer, ohne ihn zwingend komplett umzusetzen.
+4. Prüfe, wie Hilt in Instrumentation Tests Dependencies ersetzen kann.
+5. Finde einen Test, der zu stark an Implementierungsdetails hängt, und refactore ihn.
+
+## Trainer-Checkpoints
+
+Nach ca. 35 Minuten:
+
+- Läuft das Coroutine-Testsetup?
+- Verstehen alle, warum `Dispatchers.Main` in Unit-Tests ersetzt werden muss?
+
+Nach ca. 75 Minuten:
+
+- Sind Mapper-Tests grün?
+- Gibt es Tests, die fachlich nichts aussagen?
+
+## Definition of Done
+
+- Unit-Tests laufen lokal grün
+- ViewModel wird ohne Android-Gerät getestet
+- Mapper sind gegen Null-/Edge-Cases abgesichert
+- FakeRepository ist verständlich und bewusst eingesetzt
+
+## Musterlösung
+
+Branch: `task/07-testing`  
+Tag: `task-07-done`
