@@ -106,6 +106,8 @@ private class FakeBookDao : BookDao {
     override fun getBookById(id: String): Flow<BookEntity?> =
         books.map { list -> list.find { it.id == id } }
 
+    override fun getAllBooks(): Flow<List<BookEntity>> = books
+
     override suspend fun insertAll(books: List<BookEntity>) {
         this.books.value = books
     }
