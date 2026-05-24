@@ -49,7 +49,7 @@ Notiere mindestens drei mögliche Verbesserungen, ohne sie zwingend umzusetzen:
 - Suchdebounce statt IME-only
 - Detail-Screen für einzelne Bücher
 - Favoriten lokal speichern
-- Pagination (`startIndex`, `maxResults` bei Google Books)
+- Pagination (`page`, `limit` bzw. weitere Open-Library-Parameter)
 - Separate UI-Modelle statt Domain direkt im Adapter
 - Repository-Ergebnis als `Result`/sealed type statt Exception-Pfad
 
