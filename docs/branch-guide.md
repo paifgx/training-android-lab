@@ -10,12 +10,12 @@ Dieses Repository nutzt Branches, um Aufgaben und Musterlösungen zu verwalten.
 |---|---|---|
 | `main` | **Startpunkt** — leeres Projekt, lauffähig | — |
 | `task/01-kotlin-basics` | Kotlin-Grundlagen: data class, sealed, extensions | `task-01-done` |
-| `task/02-mvvm-repository` | MVVM: ViewModel, StateFlow, Repository, FakeData | `task-02-done` |
+| `task/02-mvvm-repository` | MVVM: ViewModel, StateFlow, UseCases, Repository, FakeData | `task-02-done` |
 | `task/03-retrofit-service` | Netzwerk: Retrofit, DTOs, Moshi, Error-Mapping | `task-03-done` |
 | `task/04-room-persistenz` | Datenbank: Room Entity, DAO, TypeConverter | `task-04-done` |
-| `task/05-single-source-truth` | Integration: API → Room → UI offline-first | `task-05-done` |
-| `task/06-hilt-di` | Dependency Injection: Hilt Module, Scopes | `task-06-done` |
-| `task/07-testing` | Unit-Tests: FakeRepo, ViewModel, Mapper | `task-07-done` |
+| `task/05-single-source-truth` | Integration: API → Room → UI offline-first, Result-Typen | `task-05-done` |
+| `task/06-hilt-di` | Dependency Injection: Hilt Module, Qualifier, Scopes | `task-06-done` |
+| `task/07-testing` | Unit-Tests: FakeRepo, Repository, ViewModel, Mapper | `task-07-done` |
 | `task/08-final-integration` | Abschlussreview: Integration, Review, Transfer | `task-08-done` |
 | `solution/final` | **Komplettlösung** — stabiler Alias des finalen Stands | `final-solution` |
 | `task/01-...-extended` bis `task/08-...-extended` | Erweiterte Musterlösungen für Aufbau-/Expert-Aufgaben | `task-01-extended-done` … `task-08-extended-done` |
