@@ -1,6 +1,7 @@
 package dev.training.bookshelf.data
 
 import dev.training.bookshelf.model.Book
+import dev.training.bookshelf.model.BookResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import dev.training.bookshelf.util.BookSortMode
@@ -64,7 +65,6 @@ class FakeBookRepository : BookRepository {
     override fun getBook(id: String): Flow<Book?> =
         books.map { it.find { book -> book.id == id } }
 
-    override suspend fun refreshBooks(query: String) {
-        // No-op for fake — data is already in memory
-    }
+    override suspend fun refreshBooks(query: String): BookResult<Unit> =
+        BookResult.Success(Unit)
 }
