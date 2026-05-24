@@ -5,7 +5,7 @@
 
 ## Lernziel
 
-Du baust eine erste lauffähige Architektur: UI → ViewModel → Repository. Die App zeigt lokale Fake-Daten an, reagiert auf Suchanfragen und unterscheidet Loading, Success, Empty und Error.
+Du baust eine erste lauffähige Architektur: UI → ViewModel → UseCases → Repository. Die App zeigt lokale Fake-Daten an, reagiert auf Suchanfragen und unterscheidet Loading, Success, Empty und Error.
 
 ## Kontext
 
@@ -22,8 +22,9 @@ Es soll:
 - Bücher als beobachtbaren Stream liefern
 - ein einzelnes Buch über eine ID liefern können
 - einen Refresh auslösen können
+- den Refresh als Result-Typ zurückgeben, nicht als rohe Exception
 
-**Ziel:** Das ViewModel hängt nicht an einer konkreten Datenquelle.
+**Ziel:** Das Repository ist die Datenabstraktion. Das ViewModel hängt später nicht direkt daran, sondern nutzt UseCases.
 
 ### B) Fake-Repository
 
@@ -35,7 +36,16 @@ Pflichtverhalten:
 - Suchtext filtert nach Titel und/oder Autor
 - Refresh ist im Fake zunächst ein No-op
 
-### C) ViewModel
+### C) UseCases
+
+Erstelle kleine UseCases zwischen ViewModel und Repository:
+
+- `SearchBooksUseCase` beobachtet Bücher für eine Query
+- `RefreshBooksUseCase` stößt einen Refresh an und liefert einen Result-Typ zurück
+
+**Ziel:** Das ViewModel koordiniert UI-State, aber kennt keine Repository-Details.
+
+### D) ViewModel
 
 Erstelle ein ViewModel, das:
 
@@ -46,7 +56,7 @@ Erstelle ein ViewModel, das:
 
 **Ziel:** Die UI beobachtet nur State. Sie kennt keine Datenquelle.
 
-### D) RecyclerView-UI
+### E) RecyclerView-UI
 
 Baue eine einfache XML/ViewBinding-UI mit:
 
@@ -57,7 +67,7 @@ Baue eine einfache XML/ViewBinding-UI mit:
 - Error-State
 - Retry-Button
 
-### E) Adapter
+### F) Adapter
 
 Erstelle einen RecyclerView-Adapter für Bücher.
 
@@ -89,7 +99,8 @@ Pflichtanzeige:
 - Projekt baut
 - Bücher werden aus Fake-Daten angezeigt
 - Suche filtert sichtbar
-- ViewModel hängt nur am Repository-Interface
+- ViewModel nutzt UseCases statt direkt das Repository
+- Repository-Refresh liefert einen Result-Typ
 - UI-State wird beobachtet, nicht direkt berechnet
 
 ## Erweiterte Musterlösung
