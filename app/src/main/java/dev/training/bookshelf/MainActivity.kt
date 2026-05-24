@@ -7,9 +7,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.training.bookshelf.data.DefaultBookRepository
 import dev.training.bookshelf.data.BookRepository
+import dev.training.bookshelf.data.DefaultBookRepository
 import dev.training.bookshelf.databinding.ActivityMainBinding
+import dev.training.bookshelf.domain.RefreshBooksUseCase
+import dev.training.bookshelf.domain.SearchBooksUseCase
 import dev.training.bookshelf.local.BookDatabase
 import dev.training.bookshelf.model.UiState
 import dev.training.bookshelf.network.RetrofitFactory
@@ -29,11 +31,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Manual wiring — Hilt will replace this in task/06
         val apiService = RetrofitFactory.createApiService()
         val bookDao = BookDatabase.getInstance(applicationContext).bookDao()
         val repository: BookRepository = DefaultBookRepository(apiService, bookDao)
-        viewModel = BookListViewModel(repository)
+        viewModel = BookListViewModel(
+            searchBooks = SearchBooksUseCase(repository),
+            refreshBooks = RefreshBooksUseCase(repository)
+        )
 
         setupRecyclerView()
         setupSearch()
