@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "de.gfu.training.bookshelf"
+    namespace = "dev.training.bookshelf"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "de.gfu.training.bookshelf"
+        applicationId = "dev.training.bookshelf"
         minSdk = 25
         targetSdk = 34
         versionCode = 1
