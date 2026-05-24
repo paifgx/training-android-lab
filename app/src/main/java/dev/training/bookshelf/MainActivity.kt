@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         val bookDao = BookDatabase.getInstance(applicationContext).bookDao()
         val repository: BookRepository = DefaultBookRepository(apiService, bookDao)
         viewModel = BookListViewModel(
-            searchBooks = SearchBooksUseCase(repository),
-            refreshBooks = RefreshBooksUseCase(repository)
+            searchBooksUseCase = SearchBooksUseCase(repository),
+            refreshBooksUseCase = RefreshBooksUseCase(repository)
         )
 
         setupRecyclerView()
