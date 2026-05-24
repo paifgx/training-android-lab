@@ -1,16 +1,82 @@
 package de.gfu.training.bookshelf
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import de.gfu.training.bookshelf.data.FakeBookRepository
 import de.gfu.training.bookshelf.databinding.ActivityMainBinding
+import de.gfu.training.bookshelf.model.UiState
+import de.gfu.training.bookshelf.ui.BookAdapter
+import de.gfu.training.bookshelf.ui.BookListViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: BookListViewModel
+    private val adapter = BookAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Manual wiring — Hilt will replace this in task/06
+        viewModel = BookListViewModel(FakeBookRepository())
+
+        setupRecyclerView()
+        setupSearch()
+        observeUiState()
+    }
+
+    private fun setupRecyclerView() {
+        binding.recyclerViewBooks.adapter = adapter
+    }
+
+    private fun setupSearch() {
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.searchBooks(binding.searchEditText.text.toString())
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            viewModel.uiState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        binding.progressBar.isVisible = true
+                        binding.errorContainer.isVisible = false
+                        binding.textViewEmpty.isVisible = false
+                        binding.recyclerViewBooks.isVisible = false
+                    }
+                    is UiState.Success -> {
+                        binding.progressBar.isVisible = false
+                        binding.recyclerViewBooks.isVisible = true
+                        binding.errorContainer.isVisible = false
+                        binding.textViewEmpty.isVisible = state.data.isEmpty()
+                        adapter.submitList(state.data)
+                    }
+                    is UiState.Error -> {
+                        binding.progressBar.isVisible = false
+                        binding.recyclerViewBooks.isVisible = false
+                        binding.textViewEmpty.isVisible = false
+                        binding.errorContainer.isVisible = true
+                        binding.textViewError.text = state.message
+                    }
+                }
+            }
+        }
+
+        binding.buttonRetry.setOnClickListener {
+            viewModel.retry()
+        }
     }
 }
