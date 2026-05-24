@@ -1,82 +1,111 @@
-# Aufgabe 03: Retrofit-Service & Netzwerklayer
+# Aufgabe 03: Retrofit-Service & Open Library
 
-**Tag 2** | ⏱ ca. 50 Minuten | 🎯 Selbstständig
+**Tag 2** | Pflicht: ca. 45–60 Minuten | Aufbau/Expert: +30–45 Minuten  
+**Format:** Einzelarbeit, danach kurzer Vergleich im Pair
 
 ---
 
 ## Lernziel
 
-Du baust den Retrofit-basierten Netzwerklayer: API-Interface, DTOs mit Moshi, DTO→Domain-Mapping und typsichere Fehlerbehandlung.
+Du baust einen echten Netzwerklayer mit Retrofit und Moshi. Du trennst API-DTOs sauber vom Domain-Modell und behandelst Nullability an der richtigen Stelle.
 
 ## Kontext
 
-Die MVVM-Architektur aus Aufgabe 02 nutzt noch die FakeBookRepository. Jetzt baust du den echten Netzwerkzugriff auf die Open Library API.
+Bis jetzt nutzt die App Fake-Daten. Jetzt wird ein echter API-Service vorbereitet. Die gewählte API ist **Open Library**, weil der Search-Endpoint ohne API-Key funktioniert und damit trainingsrobuster ist.
 
-**Was existiert:** Repository-Interface, ViewModel, UI, Domain-Modelle.
+Endpoint zur Orientierung:
 
-**Was fehlt:** API-Service, DTOs, Mapper, Retrofit-Konfiguration.
+`https://openlibrary.org/search.json?q=kotlin&limit=20`
 
-## Aufgabe
+## Pflichtteil — gemeinsamer Mindeststand
 
-### A) DTOs (Data Transfer Objects)
+### A) API-Response verstehen
 
-Erstelle Kotlin-Datenklassen, die den JSON-Response der Open Library Search API abbilden:
+Öffne die Open-Library-URL im Browser oder per HTTP-Client und identifiziere:
 
-- `OpenLibrarySearchResponse(docs: List<OpenLibraryBookDto>?)`
-- `OpenLibraryBookDto(key, title, author_name, first_publish_year, cover_i, edition_count, first_sentence)`
+- Liste der Bücher
+- eindeutiger Work-Key
+- Titel
+- Autoren
+- erstes Veröffentlichungsjahr
+- Cover-ID
+- optionale Kurzbeschreibung / erster Satz
 
-Nutze Moshi-Annotationen: `@JsonClass(generateAdapter = true)`, `@Json(name = "...")`.
+### B) DTOs modellieren
 
-### B) Retrofit-Service-Interface
+Erstelle DTO-Klassen für genau die Felder, die du brauchst.
 
-Erstelle ein `interface OpenLibraryApiService` mit:
+**Wichtig:** DTOs bilden die API ab, nicht deine App-Architektur.
 
-```kotlin
-@GET("search.json")
-suspend fun searchBooks(
-    @Query("q") query: String,
-    @Query("limit") limit: Int = 20,
-    @Query("fields") fields: String = "key,title,author_name,first_publish_year,cover_i,edition_count,first_sentence"
-): OpenLibrarySearchResponse
-```
+### C) Retrofit-Service
 
-### C) DTO → Domain Mapper
+Erstelle ein Retrofit-Interface für die Suche.
 
-Schreibe Extension Functions:
+Pflichtparameter:
 
-- `OpenLibrarySearchResponse.toDomainModels(): List<Book>`
-- Behandle `null` auf jeder Ebene (`docs`, `key`, `title`, `author_name`, `cover_i`)
-- Entferne bei IDs das Präfix `/works/`
-- Baue Cover-URLs aus `cover_i`: `https://covers.openlibrary.org/b/id/{cover_i}-M.jpg`
+- Suchbegriff
+- Limit
+- Fields-Auswahl, damit die Antwort nicht unnötig groß wird
 
-### D) Retrofit konfigurieren
+### D) Mapper DTO → Domain
 
-Erstelle einen `object RetrofitFactory` (oder eine Factory-Klasse), der:
+Schreibe Mapper vom API-Modell zum Domain-`Book`.
 
-- Moshi mit `KotlinJsonAdapterFactory` konfiguriert
-- OkHttpClient mit Logging-Interceptor und Timeouts (15s)
-- Retrofit mit `https://openlibrary.org/` als BaseURL
-- Den API-Service erzeugt
+Pflichtfälle:
 
-### E) Fehler-Mapping
+- fehlende Liste → leere Liste
+- fehlender Key → Buch ignorieren
+- fehlender Titel → Buch ignorieren
+- fehlende Autoren → leere Autorenliste
+- Cover-URL aus Cover-ID bauen
 
-Schreibe eine Extension `Exception.toNetworkError(): NetworkError`, die Retrofit-Exceptions auf die sealed NetworkError-Hierarchie mappt.
+### E) Retrofit-Konfiguration
 
-## Hinweise & Tipps
+Konfiguriere:
 
-- **Open Library:** Der Search-Endpoint braucht keinen API-Key und ist damit für Trainingsgruppen robuster.
-- **DTOs ≠ Domain-Modelle:** Die JSON-Struktur der API und deine App-Struktur werden sich mit der Zeit auseinanderentwickeln. Halte sie getrennt.
-- **`suspend fun`** in Retrofit: Der Netzwerk-Call ist asynchron. Keine Callback-Hölle wie in Java. Der Aufrufer entscheidet über den Dispatcher.
-- **Moshi vs Gson:** Moshi ist Kotlin-first, kleiner, schneller. Gson funktioniert, aber Moshi unterstützt Nullability und Default-Werte nativ.
-- **`@JsonClass(generateAdapter = true)`**: Moshi generiert den Adapter zur Compile-Zeit per KSP — kein Reflection zur Laufzeit. Bessere Performance.
-- **Null-Sicherheit:** Jedes Feld der Open Library API kann `null` sein. Der Mapper ist der Ort, wo du das einmalig behandelst — danach sind deine Domain-Objekte sauber.
-- **Cover-Bilder:** Open Library liefert im Suchresultat meist nur `cover_i`. Daraus baut ihr die eigentliche Bild-URL selbst.
+- Base URL Open Library
+- Moshi
+- OkHttpClient
+- Logging nur für Entwicklung
+- Timeouts
 
-## Wie weiter?
+## Aufbauaufgaben
 
-→ Branch `task/03-retrofit-service` zeigt eine mögliche Musterlösung.
-→ Nächste Aufgabe: **Aufgabe 04 — Room & Persistenz**
+1. Begrenze die API-Antwort über `fields` bewusst und prüfe den Unterschied zur vollen Antwort.
+2. Ergänze Mapping für weitere Felder, z. B. `language` oder `subject`, aber nur wenn du begründen kannst, wohin sie im Domain-Modell gehören.
+3. Behandle doppelte Treffer im Mapper (`distinctBy`).
+4. Führe eine absichtlich fehlerhafte Query aus und beobachte das Verhalten.
+5. Logge im Debug-Build, welche URL Retrofit tatsächlich aufruft.
 
-## Zeitaufwand
+## Expert-/KI-Tasks
 
-ca. 50 Minuten
+1. Lasse KI die Open-Library-JSON-Struktur analysieren und ein DTO vorschlagen. Prüfe kritisch, welche Felder du wirklich brauchst.
+2. Vergleiche zwei Mapper-Strategien: harte Filterung vs. Fallback-Werte. Welche ist für UI, Tests und Domain sauberer?
+3. Erstelle eine kleine Error-Mapping-Strategie: HTTP, Netzwerk, JSON, unbekannt.
+4. Diskutiere, ob API-DTOs `internal` sein sollten und was das für Modulgrenzen bedeutet.
+5. Skizziere, wie du Pagination später ergänzen würdest.
+
+## Trainer-Checkpoints
+
+Nach ca. 25 Minuten:
+
+- Haben alle die JSON-Struktur verstanden?
+- Gibt es Verwechslungen zwischen DTO und Domain?
+
+Nach ca. 50 Minuten:
+
+- Kompiliert der Netzwerklayer?
+- Kann jeder erklären, warum der Mapper Nullability kapselt?
+
+## Definition of Done
+
+- Retrofit-Service kompiliert
+- DTOs modellieren Open Library gezielt, nicht vollständig blind
+- Mapper liefert `List<Book>`
+- Base URL zeigt auf Open Library
+- Projekt baut
+
+## Musterlösung
+
+Branch: `task/03-retrofit-service`  
+Tag: `task-03-done`
