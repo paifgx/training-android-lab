@@ -39,7 +39,7 @@ Verdrahte in der Activity zunächst manuell:
 
 ### C) Fallback bei API-Ausfall
 
-Open Library ist robuster als Google Books, aber Training muss trotzdem funktionieren. Ergänze oder nutze lokalen Fallback:
+Open Library ist öffentlich verfügbar, aber Training muss trotzdem auch bei Netzwerkproblemen funktionieren. Ergänze oder nutze lokalen Fallback:
 
 - bei Netzwerkfehler
 - bei HTTP-Fehler
