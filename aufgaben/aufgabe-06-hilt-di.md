@@ -25,7 +25,8 @@ Stelle bereit:
 
 - Moshi
 - OkHttpClient
-- Retrofit mit Open-Library-Base-URL
+- einen `@Qualifier` für die Open-Library-Base-URL
+- Retrofit mit qualifizierter Open-Library-Base-URL
 - `OpenLibraryApiService`
 
 ### C) DatabaseModule
@@ -43,9 +44,10 @@ Binde das Repository-Interface an die echte Implementierung.
 
 Entscheide bewusst, wo `@Binds` sinnvoller ist als `@Provides`.
 
-### E) ViewModel mit Hilt
+### E) UseCases und ViewModel mit Hilt
 
-- ViewModel bekommt Repository per Constructor Injection
+- UseCases bekommen das Repository per Constructor Injection
+- ViewModel bekommt UseCases per Constructor Injection
 - Activity holt ViewModel über den AndroidX/Hilt-konformen Weg
 - manuelle Repository-Erzeugung verschwindet aus der Activity
 
@@ -78,7 +80,8 @@ Erzeuge oder analysiere mindestens zwei typische Hilt-Fehler:
 
 - App baut mit Hilt
 - Activity erstellt Repository/Retrofit/Room nicht mehr manuell
-- ViewModel erhält Repository per Injection
+- ViewModel erhält UseCases per Injection
+- Base URL ist mit `@Qualifier` versehen
 - Module sind sinnvoll getrennt
 - Mindestens zwei Hilt-Fehler wurden verstanden oder dokumentiert
 
