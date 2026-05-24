@@ -1,7 +1,5 @@
 # Aufgabe 08: Integration, Review & Transfer
 
-**Tag 4** | Pflicht: ca. 45–60 Minuten | Aufbau/Expert: +45–60 Minuten  
-**Format:** Review, Pair-Diskussion, Trainer-Moderation
 
 ---
 
@@ -74,18 +72,6 @@ Führe aus:
 3. Skizziere Pagination mit Open Library, ohne die UI an API-Parameter zu koppeln.
 4. Plane eine echte Room-Migration von Version 1 auf Version 2.
 5. Erstelle eine „Do/Don't“-Liste für KI-generierten Android-Code im Team.
-
-## Trainer-Checkpoints
-
-Nach ca. 30 Minuten:
-
-- Können alle den Datenfluss erklären?
-- Gibt es unterschiedliche, aber valide Architekturentscheidungen?
-
-Nach ca. 60 Minuten:
-
-- Hat jede Gruppe Transfernotizen?
-- Welche Risiken wären in einer echten App zuerst relevant?
 
 ## Definition of Done
 

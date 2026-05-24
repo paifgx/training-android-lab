@@ -1,7 +1,5 @@
 # Aufgabe 06: Hilt Dependency Injection
 
-**Tag 3** | Pflicht: ca. 120–150 Minuten | Aufbau/Expert: +45–90 Minuten  
-**Format:** Selbstständig mit Trainer-Debuggingrunden
 
 ---
 
@@ -75,22 +73,6 @@ Erzeuge oder analysiere mindestens zwei typische Hilt-Fehler:
 3. Vergleiche Hilt mit manuellem DI und Koin: Wo sind Compile-Time-Vorteile?
 4. Baue ein kleines „broken examples“-Dokument mit drei Hilt-Fehlern und Lösungen.
 5. Prüfe, ob dein Graph UI-Abhängigkeiten in Datenmodule zieht. Falls ja: refactoren.
-
-## Trainer-Checkpoints
-
-Nach ca. 45 Minuten:
-
-- Application/Manifest/Hilt-Grundsetup läuft?
-- Erste generierte Hilt-Fehler verstanden?
-
-Nach ca. 90 Minuten:
-
-- Activity ist frei von manueller Infrastrukturverkabelung?
-- ViewModel wird korrekt erstellt?
-
-Nach ca. 120 Minuten:
-
-- Können Teilnehmer den Graphen erklären?
 
 ## Definition of Done
 

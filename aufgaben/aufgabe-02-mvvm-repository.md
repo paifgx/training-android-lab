@@ -1,7 +1,5 @@
 # Aufgabe 02: MVVM, StateFlow & Repository
 
-**Tag 1** | Pflicht: ca. 90–120 Minuten | Aufbau/Expert: +45–60 Minuten  
-**Format:** Pair-Programming empfohlen
 
 ---
 
@@ -85,20 +83,6 @@ Pflichtanzeige:
 3. Implementiere einen Debounce für Texteingaben, ohne dass bei jedem Tastendruck sofort gesucht wird.
 4. Vergleiche `StateFlow` mit `LiveData`: Welche Entscheidung würdest du in einer Legacy-App treffen?
 5. Erstelle ein kleines Architekturdiagramm deiner Lösung und vergleiche es im Pair mit jemand anderem.
-
-## Trainer-Checkpoints
-
-Nach ca. 45 Minuten:
-
-- Repository-Interface vorhanden?
-- FakeRepository liefert Daten?
-- Alle verstehen, warum Interface vor Implementierung kommt?
-
-Nach ca. 90 Minuten:
-
-- UI reagiert auf StateFlow?
-- RecyclerView zeigt Daten?
-- Loading/Empty/Error sind als Zustände erkennbar?
 
 ## Definition of Done
 
