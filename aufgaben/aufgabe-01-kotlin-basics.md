@@ -83,6 +83,11 @@ Erstelle kleine Extensions für typische UI-/String-Fälle:
 - Fehlerhierarchie ist vorbereitet
 - Extensions sind nutzbar und verständlich
 
+## Erweiterte Musterlösung
+
+Branch: `task/01-kotlin-basics-extended`  
+Tag: `task-01-extended-done`
+
 ## Musterlösung
 
 Branch: `task/01-kotlin-basics`  
