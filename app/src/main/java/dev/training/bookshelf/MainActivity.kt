@@ -6,9 +6,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import dev.training.bookshelf.data.FakeBookRepository
+import androidx.recyclerview.widget.LinearLayoutManager
+import dev.training.bookshelf.data.DefaultBookRepository
+import dev.training.bookshelf.data.BookRepository
 import dev.training.bookshelf.databinding.ActivityMainBinding
+import dev.training.bookshelf.local.BookDatabase
 import dev.training.bookshelf.model.UiState
+import dev.training.bookshelf.network.RetrofitFactory
 import dev.training.bookshelf.ui.BookAdapter
 import dev.training.bookshelf.ui.BookListViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -26,7 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Manual wiring — Hilt will replace this in task/06
-        viewModel = BookListViewModel(FakeBookRepository())
+        val apiService = RetrofitFactory.createApiService()
+        val bookDao = BookDatabase.getInstance(applicationContext).bookDao()
+        val repository: BookRepository = DefaultBookRepository(apiService, bookDao)
+        viewModel = BookListViewModel(repository)
 
         setupRecyclerView()
         setupSearch()
@@ -34,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
+        binding.recyclerViewBooks.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewBooks.adapter = adapter
     }
 

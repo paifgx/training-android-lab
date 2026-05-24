@@ -11,15 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel for the book list screen.
- *
- * Key concepts:
- * - ViewModel survives configuration changes (rotations, etc.)
- * - StateFlow exposes immutable state to the UI — the UI observes it.
- * - viewModelScope ties coroutines to the ViewModel's lifecycle.
- * - searchJob prevents multiple active Flow collectors after repeated searches.
- */
 class BookListViewModel(
     private val repository: BookRepository
 ) : ViewModel() {
