@@ -6,20 +6,20 @@ Dieses Repository nutzt Branches, um Aufgaben und Musterlösungen zu verwalten.
 
 ### Überblick
 
-| Branch | Inhalt | Tag |
-|---|---|---|
-| `main` | **Startpunkt** — leeres Projekt, lauffähig | — |
-| `task/01-kotlin-basics` | Kotlin-Grundlagen: data class, sealed, extensions | `task-01-done` |
-| `task/02-mvvm-repository` | MVVM: ViewModel, StateFlow, UseCases, Repository, FakeData | `task-02-done` |
-| `task/03-retrofit-service` | Netzwerk: Retrofit, DTOs, Moshi, Error-Mapping | `task-03-done` |
-| `task/04-room-persistenz` | Datenbank: Room Entity, DAO, TypeConverter | `task-04-done` |
-| `task/05-single-source-truth` | Integration: API → Room → UI offline-first, Result-Typen | `task-05-done` |
-| `task/06-hilt-di` | Dependency Injection: Hilt Module, Qualifier, Scopes | `task-06-done` |
-| `task/07-testing` | Unit-Tests: FakeRepo, Repository, ViewModel, Mapper | `task-07-done` |
-| `task/08-final-integration` | Abschlussreview: Integration, Review, Transfer | `task-08-done` |
-| `solution/final` | **Komplettlösung** — stabiler Alias des finalen Stands | `final-solution` |
-| `task/01-...-extended` bis `task/08-...-extended` | Erweiterte Musterlösungen für Aufbau-/Expert-Aufgaben | `task-01-extended-done` … `task-08-extended-done` |
-| `solution/extended` | Vollständiger erweiterter Endstand | `extended-solution` |
+| Tag | Aufgabe | Branch | Inhalt | Tag |
+|---|---:|---|---|---|
+| — | Start | `main` | **Startpunkt** — leeres Projekt, lauffähig | — |
+| Tag 1 | 01 | `task/01-kotlin-basics` | Kotlin-Grundlagen: data class, sealed, extensions | `task-01-done` |
+| Tag 1 | 02 | `task/02-mvvm-repository` | MVVM: ViewModel, StateFlow, UseCases, Repository, FakeData | `task-02-done` |
+| Tag 2 | 03 | `task/03-retrofit-service` | Netzwerk: Retrofit, DTOs, Moshi, Error-Mapping | `task-03-done` |
+| Tag 2 | 04 | `task/04-room-persistenz` | Datenbank: Room Entity, DAO, TypeConverter | `task-04-done` |
+| Tag 2 | 05 | `task/05-single-source-truth` | Integration: API → Room → UI offline-first, Result-Typen | `task-05-done` |
+| Tag 3 | 06 | `task/06-hilt-di` | Dependency Injection: Hilt Module, Qualifier, Scopes | `task-06-done` |
+| Tag 4 | 07 | `task/07-testing` | Unit-Tests: FakeRepo, Repository, ViewModel, Mapper | `task-07-done` |
+| Tag 4 | 08 | `task/08-final-integration` | Abschlussreview: Integration, Review, Transfer | `task-08-done` |
+| Abschluss | — | `solution/final` | **Komplettlösung** — stabiler Alias des finalen Stands | `final-solution` |
+| Optional | 01–08 | `task/01-...-extended` bis `task/08-...-extended` | Erweiterte Musterlösungen für Aufbau-/Expert-Aufgaben | `task-01-extended-done` … `task-08-extended-done` |
+| Optional | — | `solution/extended` | Vollständiger erweiterter Endstand | `extended-solution` |
 
 ### Workflow
 
