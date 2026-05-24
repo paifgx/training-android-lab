@@ -8,6 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dev.training.bookshelf.data.FakeBookRepository
 import dev.training.bookshelf.databinding.ActivityMainBinding
+import dev.training.bookshelf.domain.RefreshBooksUseCase
+import dev.training.bookshelf.domain.SearchBooksUseCase
 import dev.training.bookshelf.model.UiState
 import dev.training.bookshelf.ui.BookAdapter
 import dev.training.bookshelf.ui.BookListViewModel
@@ -25,8 +27,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Manual wiring — Hilt will replace this in task/06
-        viewModel = BookListViewModel(FakeBookRepository())
+        val repository = FakeBookRepository()
+        viewModel = BookListViewModel(
+            searchBooks = SearchBooksUseCase(repository),
+            refreshBooks = RefreshBooksUseCase(repository)
+        )
 
         setupRecyclerView()
         setupSearch()
