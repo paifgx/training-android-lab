@@ -1,60 +1,99 @@
-# Aufgabe 05: Single Source of Truth — Integration
+# Aufgabe 05: Single Source of Truth
 
-**Tag 2** | ⏱ ca. 60 Minuten | 🎯 Selbstständig + Live-Demo
+**Tag 2** | Pflicht: ca. 60–90 Minuten | Aufbau/Expert: +45–60 Minuten  
+**Format:** Selbstständig, Trainer als Debugging-Coach
 
 ---
 
 ## Lernziel
 
-Du integrierst Retrofit und Room zu einem echten Repository: API → Room → UI. Die UI liest nur aus der Datenbank. Die Datenbank ist die "Single Source of Truth".
+Du verbindest Open Library API und Room zu einer Offline-First-Architektur: Die UI beobachtet Room, das Repository aktualisiert Room aus dem Netzwerk.
 
 ## Kontext
 
-Du hast jetzt einen Netzwerklayer (Aufgabe 03) und eine Datenbank (Aufgabe 04). Beide existieren isoliert. Jetzt verbindest du sie.
+Du hast Netzwerk und Datenbank isoliert gebaut. Jetzt entsteht daraus der wichtigste Architekturfluss der App.
 
-**Was existiert:** Retrofit-Service, Room-DAO, Domain-Modelle, ViewModel, UI-Layouts.
+## Pflichtteil — gemeinsamer Mindeststand
 
-**Was fehlt:** `DefaultBookRepository`, integrierte MainActivity.
+### A) DefaultRepository implementieren
 
-## Aufgabe
+Implementiere ein echtes Repository, das:
 
-### A) DefaultBookRepository
+- Bücher aus Room als Flow liefert
+- einzelne Bücher aus Room liefert
+- bei Refresh die API aufruft
+- API-Daten über Mapper in Domain und Entity überführt
+- alte Cache-Einträge zur Suche ersetzt
+- neue Ergebnisse in Room speichert
 
-Implementiere `BookRepository`:
-- `getBooks()`: delegiert an `bookDao.getBooksByQuery()` und mappt Entities → Domain
-- `getBook()`: delegiert an `bookDao.getBookById()`
-- `refreshBooks()`: ruft `apiService.searchBooks()` auf, mappt DTOs → Domain → Entities, speichert in Room
+### B) UI an echtes Repository hängen
 
-### B) MainActivity verkabeln
+Verdrahte in der Activity zunächst manuell:
 
-Verdrahte alle Schichten in der MainActivity (manuell, kein Hilt):
-1. Retrofit API-Service erstellen
-2. Room Database → DAO holen
-3. DefaultBookRepository(apiService, bookDao)
-4. BookListViewModel(repository)
-5. RecyclerView + LayoutManager + Adapter
-6. Such-Listener, UI-State-Beobachtung
+- API-Service
+- Database/DAO
+- Repository
+- ViewModel
 
-### C) Fehlerbehandlung
+**Ziel:** Hilt kommt erst später. Hier soll sichtbar werden, welche Objekte überhaupt gebraucht werden.
 
-Wenn der Netzwerk-Call in `refreshBooks()` fehlschlägt:
-- Room hat noch die gecachten Daten → UI zeigt diese
-- Zeige zusätzlich einen Fehler-Hinweis an
-- Der "Retry"-Button soll es nochmal versuchen
+### C) Fallback bei API-Ausfall
 
-## Hinweise & Tipps
+Open Library ist robuster als Google Books, aber Training muss trotzdem funktionieren. Ergänze oder nutze lokalen Fallback:
 
-- **Offline-First:** Das ist das zentrale Muster. Die UI fragt niemals direkt die API. Sie fragt Room. Room wird asynchron von der API befüllt. Fällt das Netzwerk aus → gecachte Daten.
-- **Reihenfolge im Repository:** Erst `refreshBooks()` (API → Room schreiben), dann liest der Flow aus Room. Da `getBooks()` einen `Flow` zurückgibt, bekommt die UI automatisch die neuen Daten sobald Room sie schreibt.
-- **Exception-Handling:** `refreshBooks()` wirft eine Exception bei Netzwerkfehlern. Das ViewModel fängt sie und setzt `UiState.Error`. Aber: die Flow-Subscription aus `getBooks()` läuft weiter — die UI zeigt gecachte Daten.
-- **Warum manuelle Verkabelung?** In Aufgabe 06 ersetzt Hilt genau diese manuelle Verkabelung. Wenn du verstanden hast, was hier passiert, verstehst du auch, was Hilt für dich tut.
-- **`catch (e: Exception)` im ViewModel:** In der Praxis würdest du die Fehler genauer typisieren (NetworkError). Für den Moment reicht es, die Message durchzureichen.
+- bei Netzwerkfehler
+- bei HTTP-Fehler
+- bei leerer/kaputter API-Antwort, wenn sinnvoll
 
-## Wie weiter?
+Die UI soll weiterhin über Room aktualisiert werden.
 
-→ Branch `task/05-single-source-truth` zeigt eine mögliche Musterlösung.
-→ Nächste Aufgabe: **Aufgabe 06 — Hilt Dependency Injection**
+### D) Manuell testen
 
-## Zeitaufwand
+Teste mindestens:
 
-ca. 60 Minuten
+- Suche nach „kotlin“
+- Suche nach „java“
+- Suche ohne Treffer
+- Flugmodus / Netzwerk aus
+- App schließen und neu öffnen
+
+## Aufbauaufgaben
+
+1. Zeige im UI eine dezente Warnung, wenn Fallback-Daten verwendet wurden.
+2. Unterscheide „keine Treffer“ von „Netzwerkfehler“.
+3. Ergänze Pull-to-refresh oder einen expliziten Refresh-Button.
+4. Verhindere unnötige API-Calls bei leerer Query.
+5. Speichere zusätzlich, ob ein Eintrag aus API oder Fallback stammt.
+
+## Expert-/KI-Tasks
+
+1. Lasse KI den Repository-Code auf Offline-First-Konsistenz prüfen. Frage explizit nach Race Conditions und doppelten Flow-Collectors.
+2. Entwerfe eine Result-/sealed-type-Strategie, bei der Repository-Ergebnisse Daten plus Warnung liefern können.
+3. Baue einfache Cache-Invalidierung: Daten älter als X Minuten werden neu geladen.
+4. Diskutiere, ob `deleteByQuery + insertAll` atomar genug ist. Was wäre mit Room-Transaktionen?
+5. Skizziere, wie Pagination in diese Architektur passt, ohne UI direkt an die API zu koppeln.
+
+## Trainer-Checkpoints
+
+Nach ca. 40 Minuten:
+
+- Repository ruft API auf und schreibt Room?
+- UI liest wirklich aus Room?
+
+Nach ca. 75 Minuten:
+
+- Funktioniert Fallback?
+- Können Teilnehmer den Datenfluss ohne Code erklären?
+
+## Definition of Done
+
+- Suche aktualisiert Room
+- UI beobachtet Room
+- Netzwerkfehler zerstören die App nicht
+- Fallback oder Cache hält die Demo lauffähig
+- Projekt baut und App startet
+
+## Musterlösung
+
+Branch: `task/05-single-source-truth`  
+Tag: `task-05-done`

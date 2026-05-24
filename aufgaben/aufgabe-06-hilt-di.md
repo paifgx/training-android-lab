@@ -1,72 +1,106 @@
-# Aufgabe 06: Hilt — Dependency Injection
+# Aufgabe 06: Hilt Dependency Injection
 
-**Tag 3** | ⏱ ca. 70 Minuten | 🎯 Selbstständig + Fehler-Diagnose-Übungen
+**Tag 3** | Pflicht: ca. 120–150 Minuten | Aufbau/Expert: +45–90 Minuten  
+**Format:** Selbstständig mit Trainer-Debuggingrunden
 
 ---
 
 ## Lernziel
 
-Du ersetzt die manuelle Verkabelung aus Aufgabe 05 durch Hilt. Du verstehst den Dependency-Graph, Scopes und Module — und erkennst, was unter der Haube passiert.
+Du ersetzt manuelle Objektverkabelung durch Hilt. Dabei lernst du Module, Scopes, `@Provides`, `@Binds`, `@Inject`, `@HiltViewModel` und typische Fehlerbilder kennen.
 
 ## Kontext
 
-Die App funktioniert komplett, aber die MainActivity erstellt alle Dependencies von Hand (RetrofitFactory, BookDatabase, DefaultBookRepository). Das ist fehleranfällig und schlecht testbar.
+Die App funktioniert bereits, aber die Activity erstellt zu viele Dinge selbst. Das macht Code schwerer testbar und skaliert schlecht. Hilt übernimmt den Dependency Graph.
 
-**Was existiert:** Vollständig funktionierende App (Aufgabe 05).
+## Pflichtteil — gemeinsamer Mindeststand
 
-**Was ändert sich:** Manuelle Verkabelung → Hilt verwaltet den Dependency-Graph.
+### A) Hilt aktivieren
 
-## Aufgabe
-
-### A) Application-Klasse
-
-Erstelle eine `BookshelfApp : Application()` und annotiere sie mit `@HiltAndroidApp`. Registriere sie im AndroidManifest via `android:name=".BookshelfApp"`.
+- Application-Klasse erstellen
+- Application im Manifest registrieren
+- Hilt-App-Annotation setzen
 
 ### B) NetworkModule
 
-Erstelle ein `@Module @InstallIn(SingletonComponent::class) object NetworkModule`:
-- `@Provides @Singleton fun provideMoshi(): Moshi`
-- `@Provides @Singleton fun provideOkHttpClient(): OkHttpClient`
-- `@Provides @Singleton fun provideRetrofit(moshi, okHttpClient): Retrofit`
-- `@Provides @Singleton fun provideApiService(retrofit): OpenLibraryApiService`
+Stelle bereit:
+
+- Moshi
+- OkHttpClient
+- Retrofit mit Open-Library-Base-URL
+- `OpenLibraryApiService`
 
 ### C) DatabaseModule
 
-Erstelle ein `@Module @InstallIn(SingletonComponent::class) object DatabaseModule`:
-- `@Provides @Singleton fun provideDatabase(@ApplicationContext context): BookDatabase`
-- `@Provides fun provideBookDao(database): BookDao`
+Stelle bereit:
+
+- RoomDatabase
+- BookDao
+
+Achte bewusst auf ApplicationContext statt ActivityContext.
 
 ### D) RepositoryModule
 
-Erstelle ein `@Module @InstallIn(SingletonComponent::class) abstract class RepositoryModule`:
-- `@Binds @Singleton abstract fun bindBookRepository(impl: DefaultBookRepository): BookRepository`
+Binde das Repository-Interface an die echte Implementierung.
 
-### E) HiltViewModel & AndroidEntryPoint
+Entscheide bewusst, wo `@Binds` sinnvoller ist als `@Provides`.
 
-- Markiere `BookListViewModel` mit `@HiltViewModel` und `@Inject constructor`
-- Markiere `DefaultBookRepository` mit `@Singleton` und `@Inject constructor`
-- Markiere `MainActivity` mit `@AndroidEntryPoint`
-- Ersetze `lateinit var viewModel` durch `val viewModel: BookListViewModel by viewModels()`
+### E) ViewModel mit Hilt
 
-### F) Aufräumen
+- ViewModel bekommt Repository per Constructor Injection
+- Activity holt ViewModel über den AndroidX/Hilt-konformen Weg
+- manuelle Repository-Erzeugung verschwindet aus der Activity
 
-Entferne `RetrofitFactory` — die Logik lebt jetzt in NetworkModule.
+### F) Fehlerdiagnose
 
-## Hinweise & Tipps
+Erzeuge oder analysiere mindestens zwei typische Hilt-Fehler:
 
-- **@Module = "Hier stelle ich Dependencies zur Verfügung."** Hilt scannt diese Klassen und baut den Graphen.
-- **@InstallIn(SingletonComponent) = "Lebt so lange wie die Application."** Alternativen: ActivityComponent, ViewModelComponent, etc.
-- **@Provides vs @Binds:** @Provides = "hier ist eine Funktion, die das Objekt erstellt." @Binds = "wenn jemand X will, gib ihm Y." @Binds braucht eine abstract class.
-- **@Singleton = "Nur eine Instanz."** Ohne @Singleton erstellt Hilt bei jeder Anfrage eine neue Instanz. Bei OkHttpClient/Retrofit wäre das Verschwendung.
-- **@ApplicationContext = "Gib mir den Application-Context."** Hilt injiziert ihn automatisch. Niemals Activity-Context für Singletons verwenden → Memory Leak.
-- **by viewModels() = Kotlin Property Delegate.** Erstellt das ViewModel via Hilt und überlebt Configuration Changes. Kein ViewModelProvider.of(this) mehr.
-- **Hilt generiert Code zur Compile-Zeit.** Wenn etwas falsch ist, siehst du es als Compile-Fehler, nicht erst zur Laufzeit.
+- Binding fehlt
+- falscher Scope
+- falscher Context
+- ViewModel falsch injiziert
 
-## Wie weiter?
+## Aufbauaufgaben
 
-→ Branch `task/06-hilt-di` zeigt eine mögliche Musterlösung.
-→ Nächste Aufgabe: **Aufgabe 07 — Testing**
+1. Ergänze Qualifier für Base URL oder OkHttpClient, auch wenn es aktuell nur eine Variante gibt.
+2. Füge ein separates Module für Fallback-/Training-Konfiguration hinzu.
+3. Dokumentiere den Dependency Graph als Liste: Wer braucht wen?
+4. Entferne bewusst eine Provider-Methode und interpretiere die Compiler-Fehlermeldung.
+5. Prüfe, welche Objekte wirklich Singleton sein sollten — und welche nicht.
 
-## Zeitaufwand
+## Expert-/KI-Tasks
 
-ca. 70 Minuten
+1. Lasse KI die Hilt-Fehlermeldung erklären, aber formuliere selbst den Fix.
+2. Entwerfe eine Test-Variante, bei der Repository oder API-Service ersetzt werden kann.
+3. Vergleiche Hilt mit manuellem DI und Koin: Wo sind Compile-Time-Vorteile?
+4. Baue ein kleines „broken examples“-Dokument mit drei Hilt-Fehlern und Lösungen.
+5. Prüfe, ob dein Graph UI-Abhängigkeiten in Datenmodule zieht. Falls ja: refactoren.
+
+## Trainer-Checkpoints
+
+Nach ca. 45 Minuten:
+
+- Application/Manifest/Hilt-Grundsetup läuft?
+- Erste generierte Hilt-Fehler verstanden?
+
+Nach ca. 90 Minuten:
+
+- Activity ist frei von manueller Infrastrukturverkabelung?
+- ViewModel wird korrekt erstellt?
+
+Nach ca. 120 Minuten:
+
+- Können Teilnehmer den Graphen erklären?
+
+## Definition of Done
+
+- App baut mit Hilt
+- Activity erstellt Repository/Retrofit/Room nicht mehr manuell
+- ViewModel erhält Repository per Injection
+- Module sind sinnvoll getrennt
+- Mindestens zwei Hilt-Fehler wurden verstanden oder dokumentiert
+
+## Musterlösung
+
+Branch: `task/06-hilt-di`  
+Tag: `task-06-done`
