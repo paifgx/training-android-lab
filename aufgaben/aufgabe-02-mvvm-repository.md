@@ -92,6 +92,11 @@ Pflichtanzeige:
 - ViewModel hängt nur am Repository-Interface
 - UI-State wird beobachtet, nicht direkt berechnet
 
+## Erweiterte Musterlösung
+
+Branch: `task/02-mvvm-repository-extended`  
+Tag: `task-02-extended-done`
+
 ## Musterlösung
 
 Branch: `task/02-mvvm-repository`  
