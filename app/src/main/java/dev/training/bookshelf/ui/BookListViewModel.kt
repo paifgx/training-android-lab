@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookListViewModel @Inject constructor(
-    private val searchBooks: SearchBooksUseCase,
-    private val refreshBooks: RefreshBooksUseCase
+    private val searchBooksUseCase: SearchBooksUseCase,
+    private val refreshBooksUseCase: RefreshBooksUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Book>>>(UiState.Loading)
@@ -38,8 +38,8 @@ class BookListViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             _uiState.value = UiState.Loading
-            val refreshResult = refreshBooks(query)
-            searchBooks(query).collect { books ->
+            val refreshResult = refreshBooksUseCase(query)
+            searchBooksUseCase(query).collect { books ->
                 _uiState.value = when {
                     books.isNotEmpty() -> UiState.Success(books)
                     refreshResult is BookResult.Failure -> UiState.Error(refreshResult.error.toUserMessage())
