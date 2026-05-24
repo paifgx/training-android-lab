@@ -42,7 +42,7 @@ git checkout -b mein/02-mvvm-repository-neustart
 
 # 6. Dateien aus Musterlösung in eigenen Branch übernehmen
 git checkout mein/02-mvvm-repository-neustart
-git checkout task/02-mvvm-repository -- app/src/main/java/de/gfu/training/bookshelf/data/
+git checkout task/02-mvvm-repository -- app/src/main/java/dev/training/bookshelf/data/
 ```
 
 ### Tipps
