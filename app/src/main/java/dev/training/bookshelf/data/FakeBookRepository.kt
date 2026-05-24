@@ -3,6 +3,9 @@ package dev.training.bookshelf.data
 import dev.training.bookshelf.model.Book
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import dev.training.bookshelf.util.BookSortMode
+import dev.training.bookshelf.util.filterByQuery
+import dev.training.bookshelf.util.sortedByMode
 import kotlinx.coroutines.flow.map
 
 /**
@@ -53,11 +56,9 @@ class FakeBookRepository : BookRepository {
 
     override fun getBooks(query: String): Flow<List<Book>> =
         books.map { bookList ->
-            if (query.isBlank()) bookList
-            else bookList.filter {
-                it.title.contains(query, ignoreCase = true) ||
-                    it.authors.any { a -> a.contains(query, ignoreCase = true) }
-            }
+            bookList
+                .filterByQuery(query)
+                .sortedByMode(BookSortMode.TITLE_ASC)
         }
 
     override fun getBook(id: String): Flow<Book?> =
