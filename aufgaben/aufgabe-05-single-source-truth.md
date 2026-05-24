@@ -1,7 +1,5 @@
 # Aufgabe 05: Single Source of Truth
 
-**Tag 2** | Pflicht: ca. 60–90 Minuten | Aufbau/Expert: +45–60 Minuten  
-**Format:** Selbstständig, Trainer als Debugging-Coach
 
 ---
 
@@ -72,18 +70,6 @@ Teste mindestens:
 3. Baue einfache Cache-Invalidierung: Daten älter als X Minuten werden neu geladen.
 4. Diskutiere, ob `deleteByQuery + insertAll` atomar genug ist. Was wäre mit Room-Transaktionen?
 5. Skizziere, wie Pagination in diese Architektur passt, ohne UI direkt an die API zu koppeln.
-
-## Trainer-Checkpoints
-
-Nach ca. 40 Minuten:
-
-- Repository ruft API auf und schreibt Room?
-- UI liest wirklich aus Room?
-
-Nach ca. 75 Minuten:
-
-- Funktioniert Fallback?
-- Können Teilnehmer den Datenfluss ohne Code erklären?
 
 ## Definition of Done
 

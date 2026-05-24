@@ -1,7 +1,5 @@
 # Aufgabe 04: Room-Persistenz
 
-**Tag 2** | Pflicht: ca. 60–75 Minuten | Aufbau/Expert: +30–60 Minuten  
-**Format:** Pair-Programming empfohlen
 
 ---
 
@@ -66,7 +64,7 @@ Schreibe Mapper in beide Richtungen:
 2. Sortiere DAO-Ergebnisse sinnvoll, z. B. nach Cache-Zeit oder Titel.
 3. Schreibe bewusst eine zweite Entity-Version auf Papier: Was wäre Version 2?
 4. Überlege, welche Felder in eine separate Tabelle gehören würden, wenn die App größer wird.
-5. Ergänze einen DAO-Query für „alle Bücher“ zur Debug-/Trainer-Demo.
+5. Ergänze einen DAO-Query für „alle Bücher“ zur Debug-/Demo-Zwecke.
 
 ## Expert-/KI-Tasks
 
@@ -75,18 +73,6 @@ Schreibe Mapper in beide Richtungen:
 3. Diskutiere TypeConverter vs. separate Author-Tabelle: Wann kippt die Entscheidung?
 4. Prüfe, ob `lastSearchQuery` als Cache-Strategie fachlich sauber ist oder nur Trainingsvereinfachung.
 5. Entwickle Testideen für Mapper und DAO, bevor du sie implementierst.
-
-## Trainer-Checkpoints
-
-Nach ca. 30 Minuten:
-
-- Entity und DAO kompilieren?
-- TypeConverter verstanden?
-
-Nach ca. 65 Minuten:
-
-- Können Teilnehmer Domain vs. Entity erklären?
-- Ist klar, was Room im Hintergrund generiert?
 
 ## Definition of Done
 

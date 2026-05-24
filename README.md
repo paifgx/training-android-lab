@@ -25,7 +25,6 @@ Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklun
 
 ```
 aufgaben/              ← Aufgabenblätter (Markdown)
-├── 00-praxisplan-und-differenzierung.md
 ├── aufgabe-01-kotlin-basics.md
 ├── aufgabe-02-mvvm-repository.md
 ├── aufgabe-03-retrofit-service.md
