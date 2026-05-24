@@ -1,7 +1,5 @@
 # Aufgabe 03: Retrofit-Service & Open Library
 
-**Tag 2** | Pflicht: ca. 45–60 Minuten | Aufbau/Expert: +30–45 Minuten  
-**Format:** Einzelarbeit, danach kurzer Vergleich im Pair
 
 ---
 
@@ -84,18 +82,6 @@ Konfiguriere:
 3. Erstelle eine kleine Error-Mapping-Strategie: HTTP, Netzwerk, JSON, unbekannt.
 4. Diskutiere, ob API-DTOs `internal` sein sollten und was das für Modulgrenzen bedeutet.
 5. Skizziere, wie du Pagination später ergänzen würdest.
-
-## Trainer-Checkpoints
-
-Nach ca. 25 Minuten:
-
-- Haben alle die JSON-Struktur verstanden?
-- Gibt es Verwechslungen zwischen DTO und Domain?
-
-Nach ca. 50 Minuten:
-
-- Kompiliert der Netzwerklayer?
-- Kann jeder erklären, warum der Mapper Nullability kapselt?
 
 ## Definition of Done
 

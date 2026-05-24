@@ -1,7 +1,5 @@
 # Aufgabe 01: Kotlin-Grundlagen für Java-Entwickler
 
-**Tag 1** | Pflicht: ca. 60–75 Minuten | Aufbau/Expert: +30–45 Minuten  
-**Format:** Einzelarbeit oder Pair-Programming
 
 ---
 
@@ -76,19 +74,6 @@ Erstelle kleine Extensions für typische UI-/String-Fälle:
 2. Prüfe, ob `Book.id` besser als `String`, Value Class oder eigener Typ modelliert wäre. Notiere Vor- und Nachteile.
 3. Erstelle bewusst einen kleinen Nullability-Fehler und lasse dir vom Compiler zeigen, warum Kotlin ihn verhindert.
 4. Vergleiche deine Extensions mit einer klassischen Java-`StringUtils`-Klasse. Was ist lesbarer, was ist riskanter?
-
-## Trainer-Checkpoints
-
-Nach ca. 30 Minuten:
-
-- Haben alle ein kompilierendes Domain-Modell?
-- Sind `val` und `var` verstanden?
-- Gibt es Nullability-Fragen?
-
-Nach ca. 60 Minuten:
-
-- Kann jeder erklären, warum `UiState` kein Enum sein sollte?
-- Hat jeder mindestens eine Extension Function geschrieben?
 
 ## Definition of Done
 

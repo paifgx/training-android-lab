@@ -1,7 +1,5 @@
 # Aufgabe 07: Unit-Tests & Test Doubles
 
-**Tag 4** | Pflicht: ca. 90 Minuten | Aufbau/Expert: +45–60 Minuten  
-**Format:** Einzelarbeit oder Pair-Programming
 
 ---
 
@@ -74,18 +72,6 @@ Teste Grenzfälle deiner Extension Functions.
 3. Entwerfe einen Integrationstest mit MockWebServer, ohne ihn zwingend komplett umzusetzen.
 4. Prüfe, wie Hilt in Instrumentation Tests Dependencies ersetzen kann.
 5. Finde einen Test, der zu stark an Implementierungsdetails hängt, und refactore ihn.
-
-## Trainer-Checkpoints
-
-Nach ca. 35 Minuten:
-
-- Läuft das Coroutine-Testsetup?
-- Verstehen alle, warum `Dispatchers.Main` in Unit-Tests ersetzt werden muss?
-
-Nach ca. 75 Minuten:
-
-- Sind Mapper-Tests grün?
-- Gibt es Tests, die fachlich nichts aussagen?
 
 ## Definition of Done
 
