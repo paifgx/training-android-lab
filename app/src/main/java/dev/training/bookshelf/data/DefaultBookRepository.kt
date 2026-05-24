@@ -9,15 +9,18 @@ import dev.training.bookshelf.network.OpenLibraryApiService
 import dev.training.bookshelf.network.toDomainModels
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
- * Real repository implementation: API → Room → UI.
+ * Real repository: API → Room → UI (Single Source of Truth).
  *
  * The UI observes Room. The repository refreshes Room from the API.
  * If the live API is unavailable or rate-limited, local fallback books keep the
  * training app usable without changing the UI or ViewModel.
  */
-class DefaultBookRepository(
+@Singleton
+class DefaultBookRepository @Inject constructor(
     private val apiService: OpenLibraryApiService,
     private val bookDao: BookDao
 ) : BookRepository {

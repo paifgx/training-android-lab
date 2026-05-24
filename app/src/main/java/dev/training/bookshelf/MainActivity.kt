@@ -1,39 +1,38 @@
 package dev.training.bookshelf
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.training.bookshelf.data.DefaultBookRepository
-import dev.training.bookshelf.data.BookRepository
+import dagger.hilt.android.AndroidEntryPoint
 import dev.training.bookshelf.databinding.ActivityMainBinding
-import dev.training.bookshelf.local.BookDatabase
 import dev.training.bookshelf.model.UiState
-import dev.training.bookshelf.network.RetrofitFactory
 import dev.training.bookshelf.ui.BookAdapter
 import dev.training.bookshelf.ui.BookListViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * MainActivity with @AndroidEntryPoint.
+ *
+ * @AndroidEntryPoint = tells Hilt that this Activity can use Hilt-created dependencies.
+ * The ViewModel is obtained via by viewModels(), so Hilt creates it correctly.
+ */
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: BookListViewModel
+    private val viewModel: BookListViewModel by viewModels()
     private val adapter = BookAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Manual wiring — Hilt will replace this in task/06
-        val apiService = RetrofitFactory.createApiService()
-        val bookDao = BookDatabase.getInstance(applicationContext).bookDao()
-        val repository: BookRepository = DefaultBookRepository(apiService, bookDao)
-        viewModel = BookListViewModel(repository)
 
         setupRecyclerView()
         setupSearch()
