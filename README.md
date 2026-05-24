@@ -5,7 +5,7 @@ Von Java-Entwicklern für Java-Entwickler, die in die moderne Android-Entwicklun
 
 ## Konzept
 
-**Bookshelf** ist eine Buchersuche-App, die die Google Books API nutzt. Die Teilnehmer entwickeln sie Schritt für Schritt über 4 Tage und 8 Aufgaben — von Kotlin-Grundlagen bis zum komplett integrierten Endprodukt.
+**Bookshelf** ist eine Buchersuche-App, die die Open Library API nutzt. Die Teilnehmer entwickeln sie Schritt für Schritt über 4 Tage und 8 Aufgaben — von Kotlin-Grundlagen bis zum komplett integrierten Endprodukt.
 
 ### Technologiestack
 

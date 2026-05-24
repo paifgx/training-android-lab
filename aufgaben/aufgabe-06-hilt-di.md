@@ -28,7 +28,7 @@ Erstelle ein `@Module @InstallIn(SingletonComponent::class) object NetworkModule
 - `@Provides @Singleton fun provideMoshi(): Moshi`
 - `@Provides @Singleton fun provideOkHttpClient(): OkHttpClient`
 - `@Provides @Singleton fun provideRetrofit(moshi, okHttpClient): Retrofit`
-- `@Provides @Singleton fun provideApiService(retrofit): GoogleBooksApiService`
+- `@Provides @Singleton fun provideApiService(retrofit): OpenLibraryApiService`
 
 ### C) DatabaseModule
 
