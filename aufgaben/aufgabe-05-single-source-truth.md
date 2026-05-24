@@ -79,6 +79,11 @@ Teste mindestens:
 - Fallback oder Cache hält die Demo lauffähig
 - Projekt baut und App startet
 
+## Erweiterte Musterlösung
+
+Branch: `task/05-single-source-truth-extended`  
+Tag: `task-05-extended-done`
+
 ## Musterlösung
 
 Branch: `task/05-single-source-truth`  
