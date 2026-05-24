@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import de.gfu.training.bookshelf.data.BookRepository
 import de.gfu.training.bookshelf.model.Book
 import de.gfu.training.bookshelf.model.UiState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +18,7 @@ import kotlinx.coroutines.launch
  * - ViewModel survives configuration changes (rotations, etc.)
  * - StateFlow exposes immutable state to the UI — the UI observes it.
  * - viewModelScope ties coroutines to the ViewModel's lifecycle.
- * - In Java/Android without ViewModel: you'd manage state in onSaveInstanceState,
- *   or use LiveData (which is still valid, but StateFlow is the modern approach).
+ * - searchJob prevents multiple active Flow collectors after repeated searches.
  */
 class BookListViewModel(
     private val repository: BookRepository
@@ -28,6 +28,7 @@ class BookListViewModel(
     val uiState: StateFlow<UiState<List<Book>>> = _uiState.asStateFlow()
 
     private var currentQuery: String = ""
+    private var searchJob: Job? = null
 
     init {
         searchBooks("")
@@ -35,7 +36,8 @@ class BookListViewModel(
 
     fun searchBooks(query: String) {
         currentQuery = query
-        viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
                 repository.refreshBooks(query)

@@ -1,10 +1,11 @@
 package de.gfu.training.bookshelf
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import de.gfu.training.bookshelf.data.FakeBookRepository
 import de.gfu.training.bookshelf.databinding.ActivityMainBinding
 import de.gfu.training.bookshelf.model.UiState
@@ -49,27 +50,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeUiState() {
         lifecycleScope.launch {
-            viewModel.uiState.collectLatest { state ->
-                when (state) {
-                    is UiState.Loading -> {
-                        binding.progressBar.isVisible = true
-                        binding.errorContainer.isVisible = false
-                        binding.textViewEmpty.isVisible = false
-                        binding.recyclerViewBooks.isVisible = false
-                    }
-                    is UiState.Success -> {
-                        binding.progressBar.isVisible = false
-                        binding.recyclerViewBooks.isVisible = true
-                        binding.errorContainer.isVisible = false
-                        binding.textViewEmpty.isVisible = state.data.isEmpty()
-                        adapter.submitList(state.data)
-                    }
-                    is UiState.Error -> {
-                        binding.progressBar.isVisible = false
-                        binding.recyclerViewBooks.isVisible = false
-                        binding.textViewEmpty.isVisible = false
-                        binding.errorContainer.isVisible = true
-                        binding.textViewError.text = state.message
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
+                        is UiState.Loading -> {
+                            binding.progressBar.isVisible = true
+                            binding.errorContainer.isVisible = false
+                            binding.textViewEmpty.isVisible = false
+                            binding.recyclerViewBooks.isVisible = false
+                        }
+                        is UiState.Success -> {
+                            binding.progressBar.isVisible = false
+                            binding.recyclerViewBooks.isVisible = true
+                            binding.errorContainer.isVisible = false
+                            binding.textViewEmpty.isVisible = state.data.isEmpty()
+                            adapter.submitList(state.data)
+                        }
+                        is UiState.Error -> {
+                            binding.progressBar.isVisible = false
+                            binding.recyclerViewBooks.isVisible = false
+                            binding.textViewEmpty.isVisible = false
+                            binding.errorContainer.isVisible = true
+                            binding.textViewError.text = state.message
+                        }
                     }
                 }
             }
