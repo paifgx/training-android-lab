@@ -1,0 +1,8 @@
+# Copy to local.properties if Android Studio/Gradle does not detect the SDK automatically.
+# Do not commit local.properties; it is intentionally gitignored.
+
+# Linux/macOS example:
+# sdk.dir=/home/<user>/Android/Sdk
+
+# Windows example:
+# sdk.dir=C\\:\\Users\\<user>\\AppData\\Local\\Android\\Sdk
