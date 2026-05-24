@@ -83,6 +83,11 @@ Schreibe Mapper in beide Richtungen:
 - Mapper Entity ↔ Domain vorhanden
 - Projekt baut
 
+## Erweiterte Musterlösung
+
+Branch: `task/04-room-persistenz-extended`  
+Tag: `task-04-extended-done`
+
 ## Musterlösung
 
 Branch: `task/04-room-persistenz`  
